@@ -1458,8 +1458,8 @@
                 <h2 class="section-title" data-lang-es="Momentos Diseñados para el Alma" data-lang-en="Moments Designed for the Soul">Momentos Diseñados para el Alma</h2>
                 <p class="section-desc" data-lang-es="Cada rincón de Anasazi ha sido creado para despertar tus sentidos y renovar tu espíritu." data-lang-en="Every corner of Anasazi has been created to awaken your senses and renew your spirit.">Cada rincón de Anasazi ha sido creado para despertar tus sentidos y renovar tu espíritu.</p>
             </div>
-            <div class="amenity-cards reveal" id="amCards"></div>
-            <div class="am-squares reveal" id="amSquares"></div>
+            <div class="amenity-cards" id="amCards"></div>
+            <div class="am-squares" id="amSquares"></div>
             <div class="am-cta reveal">
                 <a href="#" onclick="go('accommodation');return false" data-lang-es="Explorar todos los detalles →" data-lang-en="Explore all details →">Explorar todos los detalles →</a>
             </div>
@@ -1471,7 +1471,7 @@
                 <p class="section-eyebrow" data-lang-es="Alojamiento" data-lang-en="Accommodation">Alojamiento</p>
                 <h2 class="section-title" data-lang-es="Donde los Sueños se Funden con las Estrellas" data-lang-en="Where Dreams Meld with the Stars">Donde los Sueños se Funden con las Estrellas</h2>
             </div>
-            <div class="acc-grid reveal" id="accGrid"></div>
+            <div class="acc-grid" id="accGrid"></div>
         </section>
 
         <!-- FAQ HOME -->
@@ -1480,7 +1480,7 @@
                 <p class="section-eyebrow" data-lang-es="Preguntas Frecuentes" data-lang-en="Frequently Asked">Preguntas Frecuentes</p>
                 <h2 class="section-title" data-lang-es="Todo Lo Que Necesitas Saber" data-lang-en="Everything You Need to Know">Todo Lo Que Necesitas Saber</h2>
             </div>
-            <div class="faq-list reveal" id="faqHome"></div>
+            <div class="faq-list" id="faqHome"></div>
             <div class="faq-more reveal">
                 <a class="btn-link" onclick="go('faq')" data-lang-es="Ver Todas las Preguntas" data-lang-en="See All Questions">Ver Todas las Preguntas</a>
             </div>
@@ -1563,7 +1563,7 @@
                 <p class="section-eyebrow" data-lang-es="Preguntas Frecuentes" data-lang-en="Frequently Asked">Preguntas Frecuentes</p>
                 <h2 class="section-title" data-lang-es="Resolvemos Tus Dudas" data-lang-en="We Answer Your Questions">Resolvemos Tus Dudas</h2>
             </div>
-            <div id="faqFull" class="reveal"></div>
+            <div id="faqFull"></div>
         </div>
     </div>
 
@@ -1574,7 +1574,7 @@
                 <h2 data-lang-es="Invierte en Samalayuca" data-lang-en="Invest in Samalayuca">Invierte en Samalayuca</h2>
                 <p data-lang-es="Grupo Befued ofrece terrenos con financiamiento directo en una de las zonas con mayor potencial de crecimiento en Chihuahua." data-lang-en="Grupo Befued offers land with direct financing in one of the areas with highest growth potential in Chihuahua.">Grupo Befued ofrece terrenos con financiamiento directo en una de las zonas con mayor potencial de crecimiento en Chihuahua.</p>
             </div>
-            <div class="inv-grid reveal" id="invGrid"></div>
+            <div class="inv-grid" id="invGrid"></div>
             <div style="text-align:center;margin-top:56px" class="reveal">
                 <a class="btn-hero btn-hero-primary" href="https://wa.me/526562973553?text=Hola!%20Quiero%20agendar%20una%20visita%20para%20los%20terrenos%20de%20inversi%C3%B3n%20en%20Samalayuca" target="_blank" data-lang-es="Agendar Visita" data-lang-en="Schedule Visit">Agendar Visita</a>
             </div>
@@ -1961,11 +1961,10 @@
     // Inicialización inmediata y segura
     function init() {
         build();
+        // Reveal immediately — no timeout needed since dynamic containers no longer use reveal
+        document.querySelectorAll('.page.on .reveal').forEach(function(e){ e.classList.add('vis'); });
         var loader = document.getElementById('loader');
         if (loader) setTimeout(function(){ loader.classList.add('hidden'); }, 800);
-        setTimeout(function(){
-            document.querySelectorAll('.page.on .reveal').forEach(function(e){ e.classList.add('vis'); });
-        }, 100);
     }
 
     if (document.readyState === 'loading') {
