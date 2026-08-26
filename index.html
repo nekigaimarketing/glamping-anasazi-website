@@ -1709,15 +1709,16 @@
 
     function go(p) {
         document.querySelectorAll('.page').forEach(function(e){e.classList.remove('on')});
-        document.getElementById('pg-'+p).classList.add('on');
+        var target = document.getElementById('pg-'+p);
+        if (target) {
+            target.classList.add('on');
+            target.querySelectorAll('.reveal').forEach(function(e){ e.classList.add('vis'); });
+        }
         document.querySelectorAll('.nav-link').forEach(function(e){e.classList.remove('active')});
         document.querySelectorAll('.nav-link').forEach(function(e){
             if(e.getAttribute('onclick')&&e.getAttribute('onclick').indexOf(p)>-1) e.classList.add('active');
         });
         window.scrollTo({top:0,behavior:'smooth'});
-        setTimeout(function(){
-            document.querySelectorAll('#pg-'+p+' .reveal').forEach(function(e){e.classList.add('vis')});
-        },100);
     }
 
     function openBookingFromFloat() {
@@ -1782,8 +1783,8 @@
 
     window.addEventListener('scroll',function(){
         var n=document.getElementById('navbar'),f=document.getElementById('heroFloat');
-        n.classList.toggle('scrolled',window.scrollY>80);
-        f.classList.toggle('show',window.scrollY>window.innerHeight*0.4);
+        if (n) n.classList.toggle('scrolled',window.scrollY>80);
+        if (f) f.classList.toggle('show',window.scrollY>window.innerHeight*0.4);
         document.querySelectorAll('.reveal:not(.vis)').forEach(function(e){
             if(e.getBoundingClientRect().top<window.innerHeight*0.88) e.classList.add('vis');
         });
@@ -1849,7 +1850,7 @@
             {icon:'<svg viewBox="0 0 24 24"><path d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"/></svg>',name:{es:'Cenote Anasazi',en:'Anasazi Cenote'},desc:{es:'Alberca con forma de cenote de concepto artístico único.',en:'Cenote-shaped pool with unique artistic concept.'}},
             {icon:'<svg viewBox="0 0 24 24"><path d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23.693L5 14.5"/></svg>',name:{es:'Jacuzzi Relajante',en:'Relaxing Jacuzzi'},desc:{es:'Jacuzzi con hidromasaje para máxima relajación.',en:'Hydromassage jacuzzi for maximum relaxation.'}},
             {icon:'<svg viewBox="0 0 24 24"><path d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>',name:{es:'Lago con Esculturas',en:'Lake with Sculptures'},desc:{es:'Lago privado con más de 15 esculturas y fuentes zen.',en:'Private lake with over 15 sculptures and zen fountains.'}},
-            {icon:'<svg viewBox="0 0 24 24"><path d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z"/></svg>',name:{es:'Área de Fogatero',en:'Fire Pit Area'},desc:{es:'Fogata con servicio completo, $500 MXN, 3-4 horas. Todos los días.',en:'Fire pit with full service, $500 MXN, 3-4 hours. Every day.'}},
+            {icon:'<svg viewBox="0 0 24 24"><path d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z"/></svg>',name:{es:'Área de Fogatero',en:'Fire Pit Area'},desc:{es:'Fogata con servicio completo, $500 MXN, 3-4 horas. Todos los días.',en:'Fire pit with full service, 3-4 hours. Every day.'}},
             {icon:'<svg viewBox="0 0 24 24"><path d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>',name:{es:'Parque y Jardines',en:'Park and Gardens'},desc:{es:'Parque con columpios, sombras, asadores y jardín de esculturas.',en:'Park with swings, shade, grills, and sculpture garden.'}}
         ],
         prices: [
@@ -1878,63 +1879,104 @@
     function t(obj){return typeof obj==='object'?obj[L]:obj}
 
     function build(){
-        // Amenity Cards
-        var h='';
-        D.amCards.forEach(function(a){h+='<div class="am-card" onclick="go(\'accommodation\')">'+a.icon+'<h3>'+t(a.name)+'</h3><p>'+t(a.desc)+'</p></div>'});
-        document.getElementById('amCards').innerHTML=h;
+        // Amenity Cards (Home)
+        var amCardsEl = document.getElementById('amCards');
+        if (amCardsEl) {
+            var h='';
+            D.amCards.forEach(function(a){h+='<div class="am-card" onclick="go(\'accommodation\')">'+a.icon+'<h3>'+t(a.name)+'</h3><p>'+t(a.desc)+'</p></div>'});
+            amCardsEl.innerHTML=h;
+        }
 
-        // Amenity Squares
-        h='';
-        D.amSquares.forEach(function(a){h+='<div class="am-sq" onclick="go(\'accommodation\')">'+a.icon+'<span>'+t(a.name)+'</span></div>'});
-        document.getElementById('amSquares').innerHTML=h;
+        // Amenity Squares (Home)
+        var amSquaresEl = document.getElementById('amSquares');
+        if (amSquaresEl) {
+            var h='';
+            D.amSquares.forEach(function(a){h+='<div class="am-sq" onclick="go(\'accommodation\')">'+a.icon+'<span>'+t(a.name)+'</span></div>'});
+            amSquaresEl.innerHTML=h;
+        }
 
-        // Accommodation Cards
-        h='';
-        D.acc.forEach(function(a){
-            var feats='';
-            a.feats.forEach(function(f){feats+='<div class="acc-feat"><svg viewBox="0 0 24 24"><path d="M4.5 12.75l6 6 9-13.5"/></svg><span>'+t(f)+'</span></div>'});
-            h+='<div class="acc-card"><div class="acc-card-img"><img src="'+a.img+'" alt="'+t(a.title)+'"><div class="acc-badge">'+t(a.badge)+'</div></div><div class="acc-card-body"><h3>'+t(a.title)+'</h3><p class="acc-tagline">'+t(a.tag)+'</p><div class="acc-features">'+feats+'</div><div class="acc-bottom"><div><p class="acc-from" data-lang-es="Desde" data-lang-en="From">Desde</p><p class="acc-price">'+a.price+' <small>'+t(a.unit)+'</small></p></div><button class="btn-acc-book" onclick="go(\'booking\')" data-lang-es="Reservar" data-lang-en="Book">Reservar</button></div></div></div>';
-        });
-        document.getElementById('accGrid').innerHTML=h;
+        // Accommodation Cards (Home)
+        var accGridEl = document.getElementById('accGrid');
+        if (accGridEl) {
+            var h='';
+            D.acc.forEach(function(a){
+                var feats='';
+                a.feats.forEach(function(f){feats+='<div class="acc-feat"><svg viewBox="0 0 24 24"><path d="M4.5 12.75l6 6 9-13.5"/></svg><span>'+t(f)+'</span></div>'});
+                h+='<div class="acc-card"><div class="acc-card-img"><img src="'+a.img+'" alt="'+t(a.title)+'"><div class="acc-badge">'+t(a.badge)+'</div></div><div class="acc-card-body"><h3>'+t(a.title)+'</h3><p class="acc-tagline">'+t(a.tag)+'</p><div class="acc-features">'+feats+'</div><div class="acc-bottom"><div><p class="acc-from" data-lang-es="Desde" data-lang-en="From">Desde</p><p class="acc-price">'+a.price+' <small>'+t(a.unit)+'</small></p></div><button class="btn-acc-book" onclick="go(\'booking\')" data-lang-es="Reservar" data-lang-en="Book">Reservar</button></div></div></div>';
+            });
+            accGridEl.innerHTML=h;
+        }
 
         // FAQ
         function faqHTML(arr){var s='';arr.forEach(function(f){s+='<div class="faq-item" onclick="faqToggle(this)"><div class="faq-q"><span>'+t(f.q)+'</span><svg class="faq-q-icon" viewBox="0 0 24 24"><path d="M12 4.5v15m7.5-7.5h-15"/></svg></div><div class="faq-a"><div class="faq-a-inner">'+t(f.a)+'</div></div></div>'});return s}
-        document.getElementById('faqHome').innerHTML=faqHTML(D.faq.slice(0,4));
-        document.getElementById('faqFull').innerHTML=faqHTML(D.faq);
+        var faqHomeEl = document.getElementById('faqHome');
+        if (faqHomeEl) faqHomeEl.innerHTML=faqHTML(D.faq.slice(0,4));
+        var faqFullEl = document.getElementById('faqFull');
+        if (faqFullEl) faqFullEl.innerHTML=faqHTML(D.faq);
 
-        // Gallery
-        h='';
-        D.gallery.forEach(function(g){h+='<div class="gallery-item" onclick="openLb(\''+g+'\')"><img src="'+g+'" alt="Galería Anasazi"></div>'});
-        document.getElementById('galleryGrid').innerHTML=h;
+        // Gallery (Accommodation)
+        var galleryGridEl = document.getElementById('galleryGrid');
+        if (galleryGridEl) {
+            var h='';
+            D.gallery.forEach(function(g){h+='<div class="gallery-item" onclick="openLb(\''+g+'\')"><img src="'+g+'" alt="Galería Anasazi"></div>'});
+            galleryGridEl.innerHTML=h;
+        }
 
-        // Amenity Detail
-        h='';
-        D.amDetail.forEach(function(a){h+='<div class="ad-card">'+a.icon+'<h3>'+t(a.name)+'</h3><p>'+t(a.desc)+'</p></div>'});
-        document.getElementById('amDetail').innerHTML=h;
+        // Amenity Detail (Accommodation Page)
+        var amDetailEl = document.getElementById('amDetail');
+        if (amDetailEl) {
+            var h='';
+            D.amDetail.forEach(function(a){h+='<div class="ad-card">'+a.icon+'<h3>'+t(a.name)+'</h3><p>'+t(a.desc)+'</p></div>'});
+            amDetailEl.innerHTML=h;
+        }
 
-        // Prices
-        h='<div class="pt-head"><span data-lang-es="Temporada" data-lang-en="Season">Temporada</span><span data-lang-es="Lunes — Jueves" data-lang-en="Monday — Thursday">Lunes — Jueves</span><span data-lang-es="Viernes — Domingo" data-lang-en="Friday — Sunday">Viernes — Domingo</span></div>';
-        D.prices.forEach(function(p){h+='<div class="pt-row"><span>'+t(p.season)+'</span><span>'+t(p.lw)+'</span><span>'+t(p.we)+'</span></div>'});
-        document.getElementById('pricesTable').innerHTML=h;
+        // Prices Table (Accommodation Page)
+        var pricesTableEl = document.getElementById('pricesTable');
+        if (pricesTableEl) {
+            var h='<div class="pt-head"><span data-lang-es="Temporada" data-lang-en="Season">Temporada</span><span data-lang-es="Lunes — Jueves" data-lang-en="Monday — Thursday">Lunes — Jueves</span><span data-lang-es="Viernes — Domingo" data-lang-en="Friday — Sunday">Viernes — Domingo</span></div>';
+            D.prices.forEach(function(p){h+='<div class="pt-row"><span>'+t(p.season)+'</span><span>'+t(p.lw)+'</span><span>'+t(p.we)+'</span></div>'});
+            pricesTableEl.innerHTML=h;
+        }
 
-        // Services
-        h='';
-        D.svc.forEach(function(s){h+='<div class="svc-card"><div class="svc-card-img"><img src="'+s.img+'" alt="'+t(s.name)+'"></div><div class="svc-card-body"><h3>'+t(s.name)+'</h3><p class="svc-price">'+s.price+'</p><p>'+t(s.desc)+'</p></div></div>'});
-        document.getElementById('svcGrid').innerHTML=h;
+        // Services (Accommodation Page)
+        var svcGridEl = document.getElementById('svcGrid');
+        if (svcGridEl) {
+            var h='';
+            D.svc.forEach(function(s){h+='<div class="svc-card"><div class="svc-card-img"><img src="'+s.img+'" alt="'+t(s.name)+'"></div><div class="svc-card-body"><h3>'+t(s.name)+'</h3><p class="svc-price">'+s.price+'</p><p>'+t(s.desc)+'</p></div></div>'});
+            svcGridEl.innerHTML=h;
+        }
 
-        // Investments
-        h='';
-        D.inv.forEach(function(i){h+='<div class="inv-card">'+i.icon+'<h3>'+t(i.name)+'</h3><p>'+t(i.desc)+'</p></div>'});
-        document.getElementById('invGrid').innerHTML=h;
+        // Investments (Investments Page)
+        var invGridEl = document.getElementById('invGrid');
+        if (invGridEl) {
+            var h='';
+            D.inv.forEach(function(i){h+='<div class="inv-card">'+i.icon+'<h3>'+t(i.name)+'</h3><p>'+t(i.desc)+'</p></div>'});
+            invGridEl.innerHTML=h;
+        }
 
         // Re-apply language to static elements
         document.querySelectorAll('[data-lang-'+L+']').forEach(function(e){e.textContent=e.getAttribute('data-lang-'+L)});
     }
 
-    window.addEventListener('load',function(){
-        setTimeout(function(){document.getElementById('loader').classList.add('hidden')},1200);
+    // Inicialización inmediata y segura
+    function init() {
         build();
-        setTimeout(function(){document.querySelectorAll('.reveal').forEach(function(e){if(e.getBoundingClientRect().top<window.innerHeight*0.9)e.classList.add('vis')})},200);
+        var loader = document.getElementById('loader');
+        if (loader) setTimeout(function(){ loader.classList.add('hidden'); }, 800);
+        setTimeout(function(){
+            document.querySelectorAll('.page.on .reveal').forEach(function(e){ e.classList.add('vis'); });
+        }, 100);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+    window.addEventListener('load', function() {
+        var loader = document.getElementById('loader');
+        if (loader) loader.classList.add('hidden');
+        document.querySelectorAll('.page.on .reveal').forEach(function(e){ e.classList.add('vis'); });
     });
     </script>
 </body>
