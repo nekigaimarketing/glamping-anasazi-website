@@ -2224,6 +2224,12 @@
     function init() {
         build();
         applyHeroText();
+        // Force hero video play
+        var heroVid = document.querySelector('#hero video');
+        if (heroVid) {
+            heroVid.muted = true;
+            heroVid.play().catch(function(){});
+        }
         // Reveal immediately
         document.querySelectorAll('.page.on .reveal').forEach(function(e){ e.classList.add('vis'); });
         var loader = document.getElementById('loader');
