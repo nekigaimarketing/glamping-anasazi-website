@@ -1302,7 +1302,45 @@
             background: var(--white);
             flex-shrink: 0;
         }
-        .chat-bubble:hover { transform: scale(1.08); box-shadow: 0 12px 36px rgba(44,24,16,0.35); }
+        .chat-bubble:hover { transform: scale(1.08); box-shadow: 0 0 0 5px rgba(184,92,56,0.25), 0 12px 36px rgba(44,24,16,0.35); }
+        /* Tooltip on hover */
+        .chat-bubble-wrap {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+        .chat-tooltip {
+            position: absolute;
+            right: calc(100% + 14px);
+            bottom: 50%;
+            transform: translateY(50%);
+            background: var(--text);
+            color: var(--white);
+            padding: 8px 14px;
+            border-radius: 8px;
+            white-space: nowrap;
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            font-weight: 400;
+            letter-spacing: 0.04em;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+            transform: translateY(50%) translateX(6px);
+        }
+        .chat-tooltip::after {
+            content: '';
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 6px solid transparent;
+            border-left-color: var(--text);
+        }
+        .chat-bubble-wrap:hover .chat-tooltip {
+            opacity: 1;
+            transform: translateY(50%) translateX(0);
+        }
         .chat-bubble img { width: 100%; height: 100%; object-fit: cover; }
         .chat-box {
             width: 340px;
@@ -1871,8 +1909,11 @@
                 </button>
             </div>
         </div>
-        <div class="chat-bubble" onclick="toggleChat()" title="Chat con nosotros">
-            <img src="assets/images/logo.png" alt="Chat Anasazi">
+        <div class="chat-bubble-wrap">
+            <span class="chat-tooltip" id="chatTooltip">¿Necesitas ayuda?</span>
+            <div class="chat-bubble" onclick="toggleChat()" title="Chat con nosotros">
+                <img src="assets/images/logo.png" alt="Chat Anasazi">
+            </div>
         </div>
     </div>
 
@@ -1909,6 +1950,9 @@
             }
         });
         applyHeroText();
+        // Update chat tooltip text
+        var tip = document.getElementById('chatTooltip');
+        if (tip) tip.textContent = L === 'es' ? '¿Necesitas ayuda?' : 'Need help?';
         ['es1','en1','es2','en2'].forEach(function(id) {
             var el = document.getElementById(id);
             if (el) el.classList.toggle('on', (id[0]==='e'&&id[1]==='s'&&L==='es') || (id[0]==='e'&&id[1]==='n'&&L==='en'));
@@ -2166,8 +2210,11 @@
             invGridEl.innerHTML=h;
         }
 
-        // Re-apply language to static elements
-        document.querySelectorAll('[data-lang-'+L+']').forEach(function(e){e.textContent=e.getAttribute('data-lang-'+L)});
+        // Re-apply language to static elements (use innerHTML for values that contain HTML tags)
+        document.querySelectorAll('[data-lang-'+L+']').forEach(function(e){
+            var val = e.getAttribute('data-lang-'+L);
+            if (val && val.indexOf('<') > -1) { e.innerHTML = val; } else { e.textContent = val; }
+        });
     }
 
     // Inicialización inmediata y segura
