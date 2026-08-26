@@ -490,7 +490,10 @@
             border-radius: var(--radius-lg);
             z-index: -1;
             opacity: 0.3;
+            /* Only show when image actually loaded */
+            display: none;
         }
+        .essence-visual.loaded::after { display: block; }
         .essence-body {}
         .essence-eyebrow {
             font-size: 0.7rem;
@@ -1649,7 +1652,7 @@
         <section class="essence">
             <div class="essence-grid reveal">
                 <div class="essence-visual">
-                    <img src="https://images.unsplash.com/photo-1618767689160-da3fb8923367?w=800&q=80" alt="Experiencia Glamping Anasazi">
+                    <img src="assets/images/essence.jpg" alt="Experiencia Glamping Anasazi" onload="this.closest('.essence-visual').classList.add('loaded')" onerror="this.style.display='none'">
                 </div>
                 <div class="essence-body">
                     <p class="essence-eyebrow" data-lang-es="La Experiencia" data-lang-en="The Experience">La Experiencia</p>
