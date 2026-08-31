@@ -1282,236 +1282,6 @@
         }
         .lb-close:hover { background: var(--accent); }
 
-        /* Chatbot */
-        /* ═══ CHATBOX WIDGET ═══ */
-        .chat-widget {
-            position: fixed;
-            bottom: 28px;
-            right: 28px;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 12px;
-        }
-        .chat-bubble {
-            width: 60px; height: 60px;
-            border-radius: 50%;
-            overflow: hidden;
-            cursor: pointer;
-            box-shadow: 0 8px 28px rgba(44,24,16,0.28);
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-            border: 2px solid var(--white);
-            background: var(--white);
-            flex-shrink: 0;
-        }
-        .chat-bubble:hover { transform: scale(1.08); box-shadow: 0 0 0 5px rgba(184,92,56,0.25), 0 12px 36px rgba(44,24,16,0.35); }
-        /* Tooltip on hover */
-        .chat-bubble-wrap {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-        }
-        .chat-tooltip {
-            position: absolute;
-            right: calc(100% + 14px);
-            bottom: 50%;
-            transform: translateY(50%);
-            background: var(--text);
-            color: var(--white);
-            padding: 8px 14px;
-            border-radius: 8px;
-            white-space: nowrap;
-            font-family: var(--font-body);
-            font-size: 0.8rem;
-            font-weight: 400;
-            letter-spacing: 0.04em;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.25s ease, transform 0.25s ease;
-            transform: translateY(50%) translateX(6px);
-        }
-        .chat-tooltip::after {
-            content: '';
-            position: absolute;
-            left: 100%;
-            top: 50%;
-            transform: translateY(-50%);
-            border: 6px solid transparent;
-            border-left-color: var(--text);
-        }
-        .chat-bubble-wrap:hover .chat-tooltip {
-            opacity: 1;
-            transform: translateY(50%) translateX(0);
-        }
-        .chat-bubble img { width: 100%; height: 100%; object-fit: cover; }
-        .chat-box {
-            width: 340px;
-            background: var(--white);
-            border-radius: 20px;
-            box-shadow: 0 16px 60px rgba(44,24,16,0.22);
-            overflow: hidden;
-            display: none;
-            flex-direction: column;
-            transform-origin: bottom right;
-            animation: chatOpen 0.3s cubic-bezier(0.34,1.56,0.64,1);
-        }
-        .chat-box.open { display: flex; }
-        @keyframes chatOpen {
-            from { opacity: 0; transform: scale(0.7); }
-            to   { opacity: 1; transform: scale(1); }
-        }
-        .chat-header {
-            background: var(--accent);
-            padding: 16px 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: var(--white);
-        }
-        .chat-header img {
-            width: 38px; height: 38px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid rgba(255,255,255,0.4);
-        }
-        .chat-header-info h4 {
-            font-family: var(--font-body);
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin: 0;
-        }
-        .chat-header-info p {
-            font-size: 0.72rem;
-            opacity: 0.85;
-            margin: 2px 0 0;
-        }
-        .chat-close {
-            margin-left: auto;
-            background: none;
-            border: none;
-            color: var(--white);
-            cursor: pointer;
-            opacity: 0.8;
-            font-size: 1.4rem;
-            line-height: 1;
-            padding: 0 4px;
-        }
-        .chat-close:hover { opacity: 1; }
-        .chat-messages {
-            padding: 16px;
-            min-height: 180px;
-            max-height: 280px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            background: #faf8f5;
-        }
-        .chat-msg {
-            max-width: 85%;
-            padding: 10px 14px;
-            border-radius: 16px;
-            font-size: 0.85rem;
-            line-height: 1.5;
-        }
-        .chat-msg.bot {
-            background: var(--white);
-            border: 1px solid var(--border-light);
-            border-bottom-left-radius: 4px;
-            align-self: flex-start;
-            color: var(--text);
-        }
-        .chat-msg.user {
-            background: var(--accent);
-            color: var(--white);
-            border-bottom-right-radius: 4px;
-            align-self: flex-end;
-        }
-        .chat-typing {
-            display: flex;
-            gap: 4px;
-            align-items: center;
-            padding: 8px 12px;
-            align-self: flex-start;
-        }
-        .chat-typing span {
-            width: 7px; height: 7px;
-            border-radius: 50%;
-            background: var(--text-muted);
-            animation: typingDot 1.4s infinite;
-        }
-        .chat-typing span:nth-child(2) { animation-delay: 0.2s; }
-        .chat-typing span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes typingDot {
-            0%, 80%, 100% { transform: scale(0.7); opacity: 0.5; }
-            40% { transform: scale(1); opacity: 1; }
-        }
-        .chat-input-row {
-            display: flex;
-            border-top: 1px solid var(--border-light);
-            background: var(--white);
-        }
-        .chat-input-row input {
-            flex: 1;
-            border: none;
-            padding: 14px 16px;
-            font-family: var(--font-body);
-            font-size: 0.88rem;
-            background: transparent;
-            color: var(--text);
-            outline: none;
-        }
-        .chat-input-row input::placeholder { color: var(--text-muted); }
-        .chat-send {
-            background: none;
-            border: none;
-            padding: 14px 16px;
-            cursor: pointer;
-            color: var(--accent);
-            transition: opacity 0.2s;
-        }
-        .chat-send:hover { opacity: 0.7; }
-        .chat-send svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; }
-        .chatbot {
-            position: fixed;
-            bottom: 28px; right: 28px;
-            z-index: 998;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .chatbot:hover { transform: scale(1.06); }
-        .chatbot-tooltip {
-            background: var(--text);
-            color: var(--white);
-            font-size: 0.78rem;
-            padding: 8px 16px;
-            border-radius: 100px;
-            white-space: nowrap;
-            opacity: 0;
-            transform: translateY(8px);
-            transition: var(--transition);
-            pointer-events: none;
-            box-shadow: var(--shadow-medium);
-        }
-        .chatbot:hover .chatbot-tooltip {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .chatbot-img {
-            width: 68px; height: 68px;
-            border-radius: 50%;
-            object-fit: cover;
-            background: var(--white);
-            padding: 4px;
-            box-shadow: var(--shadow-medium);
-            border: 2px solid var(--accent);
-        }
-
         /* Animations */
         .reveal {
             opacity: 0;
@@ -1560,6 +1330,81 @@
             footer { padding: 60px 24px 32px; }
             .nav-inner { padding: 0 24px; }
         }
+
+        /* ═══ CUSTOM CHAT LAUNCHER ═══ */
+        .chat-bubble-wrap {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 9999;
+            display: inline-flex;
+            align-items: center;
+        }
+        .chatbot {
+            width: 68px; height: 68px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: var(--white);
+            padding: 4px;
+            box-shadow: var(--shadow-medium);
+            border: 2px solid var(--accent);
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .chatbot:hover { transform: scale(1.08); box-shadow: 0 0 0 5px rgba(184,92,56,0.25), 0 12px 36px rgba(44,24,16,0.35); }
+        .chatbot-tooltip {
+            position: absolute;
+            right: calc(100% + 14px);
+            bottom: 50%;
+            transform: translateY(50%) translateX(6px);
+            background: var(--text);
+            color: var(--white);
+            padding: 8px 14px;
+            border-radius: 8px;
+            white-space: nowrap;
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+        .chatbot-tooltip::after {
+            content: '';
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 6px solid transparent;
+            border-left-color: var(--text);
+        }
+        .chat-bubble-wrap:hover .chatbot-tooltip {
+            opacity: 1;
+            transform: translateY(50%) translateX(0);
+        }
+        .keplead-badge {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 1000;
+            white-space: nowrap;
+            font-size: 10px;
+            font-family: var(--font-body);
+            color: #2e7d32;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 3px 8px;
+            border-radius: 4px;
+            pointer-events: auto;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-weight: 600;
+        }
+        .keplead-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            color: #1b5e20;
+        }
+
     </style>
 </head>
 <body>
@@ -1890,44 +1735,9 @@
         <img id="lbImg" src="" alt="Vista ampliada">
     </div>
 
-    <!-- CHATBOT -->
-    <!-- CHAT WIDGET -->
-    <div class="chat-widget" id="chatWidget">
-        <div class="chat-box" id="chatBox">
-            <div class="chat-header">
-                <img src="assets/images/logo.png" alt="Anasazi AI">
-                <div class="chat-header-info">
-                    <h4>Asistente Anasazi</h4>
-                    <p>&#9679; En línea</p>
-                </div>
-                <button class="chat-close" onclick="toggleChat()" aria-label="Cerrar chat">&times;</button>
-            </div>
-            <div class="chat-messages" id="chatMessages">
-                <div class="chat-msg bot" id="welcomeMsg">¡Hola! Soy el asistente de Glamping Anasazi 🌵 ¿En qué puedo ayudarte hoy?</div>
-            </div>
-            <div class="chat-input-row">
-                <input type="text" id="chatInput" placeholder="Escribe tu mensaje..." onkeydown="if(event.key==='Enter')sendChatMsg()">
-                <button class="chat-send" onclick="sendChatMsg()" aria-label="Enviar">
-                    <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                </button>
-            </div>
-        </div>
-        <div class="chat-bubble-wrap">
-            <span class="chat-tooltip" id="chatTooltip">¿Necesitas ayuda?</span>
-            <div class="chat-bubble" onclick="toggleChat()" title="Chat con nosotros">
-                <img src="assets/images/logo.png" alt="Chat Anasazi">
-            </div>
-        </div>
-    </div>
 
     <script>
     var L = 'es';
-    // CONFIGURACIÓN DE INTEGRACIÓN CON KEPLEAD CRM
-    var KEPLEAD_CONFIG = {
-        tenant_id: 'glamping-anasazi',
-        webhook_url: 'http://161.153.104.79.nip.io:5678/webhook/web-intake',
-        whatsapp_number: '526562973553'
-    };
 
     // Hero texts with HTML (not translatable via data-lang since they contain HTML tags)
     var HERO_TEXT = {
@@ -1956,6 +1766,12 @@
         // Update chat tooltip text
         var tip = document.getElementById('chatTooltip');
         if (tip) tip.textContent = L === 'es' ? '¿Necesitas ayuda?' : 'Need help?';
+        
+        // Sync language with Chatwoot
+        if (window.$chatwoot) {
+            window.$chatwoot.setLocale(L);
+        }
+        
         ['es1','en1','es2','en2'].forEach(function(id) {
             var el = document.getElementById(id);
             if (el) el.classList.toggle('on', (id[0]==='e'&&id[1]==='s'&&L==='es') || (id[0]==='e'&&id[1]==='n'&&L==='en'));
@@ -2230,65 +2046,6 @@
         if (loader) setTimeout(function(){ loader.classList.add('hidden'); }, 800);
     }
 
-    // ─── CHAT WIDGET ───
-    var chatOpen = false;
-    function toggleChat() {
-        chatOpen = !chatOpen;
-        var box = document.getElementById('chatBox');
-        if (box) box.classList.toggle('open', chatOpen);
-        if (chatOpen) {
-            var inp = document.getElementById('chatInput');
-            if (inp) setTimeout(function(){ inp.focus(); }, 200);
-        }
-    }
-    function sendChatMsg() {
-        var inp = document.getElementById('chatInput');
-        var msgs = document.getElementById('chatMessages');
-        if (!inp || !msgs) return;
-        var text = inp.value.trim();
-        if (!text) return;
-        inp.value = '';
-        // Render user bubble
-        var userBubble = document.createElement('div');
-        userBubble.className = 'chat-msg user';
-        userBubble.textContent = text;
-        msgs.appendChild(userBubble);
-        // Typing indicator
-        var typing = document.createElement('div');
-        typing.className = 'chat-typing';
-        typing.innerHTML = '<span></span><span></span><span></span>';
-        msgs.appendChild(typing);
-        msgs.scrollTop = msgs.scrollHeight;
-        // Call KepLead webhook
-        fetch(KEPLEAD_CONFIG.webhook_url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                message: text,
-                source: 'webchat',
-                tenant_id: KEPLEAD_CONFIG.tenant_id,
-                timestamp: new Date().toISOString()
-            })
-        })
-        .then(function(r){ return r.json(); })
-        .then(function(data) {
-            typing.remove();
-            var botBubble = document.createElement('div');
-            botBubble.className = 'chat-msg bot';
-            botBubble.textContent = (data && (data.reply || data.message || data.response)) ||
-                '¡Gracias por tu mensaje! En breve te contactamos. ☎️ 656 297-3553';
-            msgs.appendChild(botBubble);
-            msgs.scrollTop = msgs.scrollHeight;
-        })
-        .catch(function() {
-            typing.remove();
-            var botBubble = document.createElement('div');
-            botBubble.className = 'chat-msg bot';
-            botBubble.textContent = '¡Gracias! Pronto te atenderemos. Para una respuesta inmediata llámanos al 656 297-3553 😊';
-            msgs.appendChild(botBubble);
-            msgs.scrollTop = msgs.scrollHeight;
-        });
-    }
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
@@ -2300,6 +2057,37 @@
         if (loader) loader.classList.add('hidden');
         document.querySelectorAll('.page.on .reveal').forEach(function(e){ e.classList.add('vis'); });
     });
+    </script>
+
+
+    <!-- CUSTOM CHAT LAUNCHER -->
+    <div class="chat-bubble-wrap">
+        <span class="chatbot-tooltip" id="chatTooltip" data-lang-es="¿Necesitas ayuda?" data-lang-en="Need help?">¿Necesitas ayuda?</span>
+        <img src="assets/images/logo.png" alt="Chat Anasazi" class="chatbot" onclick="if(window.$chatwoot) window.$chatwoot.toggle('open')">
+    </div>
+    <a href="https://keplead.com" target="_blank" class="keplead-badge">Designed & Powered by KepLead</a>
+
+    <!-- CHATWOOT WIDGET -->
+    <script>
+      window.chatwootSettings = { "launcherTitle": "¡Hola! Soy el asistente de Glamping Anasazi 🌵 ¿En qué puedo ayudarte hoy?",
+        hideMessageBubble: true,
+        position: "right",
+        locale: typeof L !== 'undefined' ? L : 'es',
+        type: "standard"
+      };
+      (function(d,t) {
+        var BASE_URL="http://129.146.2.151.nip.io";
+        var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+        g.src=BASE_URL+"/packs/js/sdk.js";
+        g.async = true;
+        s.parentNode.insertBefore(g,s);
+        g.onload=function(){
+          window.chatwootSDK.run({
+            websiteToken: 'SwLTVrccjNbgbX8uzGd2C46m',
+            baseUrl: BASE_URL
+          })
+        }
+      })(document,"script");
     </script>
 </body>
 </html>
