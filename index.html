@@ -2382,17 +2382,25 @@
         .bk-cal-body { padding: 16px 20px 20px; }
         .bk-cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); margin-bottom: 6px; }
         .bk-cal-wd { text-align: center; font-size: 0.69rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); padding: 8px 0; }
-        .bk-cal-days { display: grid; grid-template-columns: repeat(7, 1fr); }
-        .bk-cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 0.86rem; cursor: pointer; border-radius: 50%; transition: background 0.18s, color 0.18s; position: relative; margin: 2px; color: var(--text); }
-        .bk-cal-day:hover:not(.bk-blocked):not(.bk-past):not(.bk-empty) { background: var(--accent-soft); color: var(--accent); }
+        .bk-cal-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+        .bk-cal-day { min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 0.88rem; cursor: pointer; border-radius: 10px; transition: all 0.2s cubic-bezier(0.25, 0.1, 0.25, 1); position: relative; margin: 1px; color: var(--text); padding: 4px 2px; }
+        .bk-cal-day:hover:not(.bk-blocked):not(.bk-past):not(.bk-empty) { background: var(--accent-soft); color: var(--accent); transform: translateY(-1px); }
         .bk-cal-day.bk-empty { cursor: default; }
-        .bk-cal-day.bk-past { color: var(--border); cursor: not-allowed; }
-        .bk-cal-day.bk-blocked { color: var(--border); cursor: not-allowed; text-decoration: line-through; background: var(--bg-warm); }
+        .bk-cal-day.bk-past { color: var(--border); cursor: not-allowed; opacity: 0.45; }
+        .bk-cal-day.bk-blocked { color: var(--text-muted); cursor: not-allowed; background: rgba(217, 205, 191, 0.25); opacity: 0.6; }
+        .bk-cal-day.bk-blocked .bk-cal-day-num { text-decoration: line-through; color: #9c8b7a; }
         .bk-cal-day.bk-today { font-weight: 700; color: var(--accent-deep); }
-        .bk-cal-day.bk-checkin { background: var(--accent); color: var(--white); font-weight: 600; border-radius: 50% 0 0 50%; margin-right: 0; }
-        .bk-cal-day.bk-checkout { background: var(--accent); color: var(--white); font-weight: 600; border-radius: 0 50% 50% 0; margin-left: 0; }
-        .bk-cal-day.bk-solo { border-radius: 50% !important; }
-        .bk-cal-day.bk-inrange { background: var(--accent-soft); color: var(--accent); border-radius: 0; margin-left: 0; margin-right: 0; }
+        .bk-cal-day.bk-today .bk-cal-day-num { border-bottom: 2px solid var(--accent); }
+        .bk-cal-day.bk-checkin { background: var(--accent) !important; color: var(--white) !important; font-weight: 600; border-radius: 10px 0 0 10px; margin-right: 0; }
+        .bk-cal-day.bk-checkout { background: var(--accent) !important; color: var(--white) !important; font-weight: 600; border-radius: 0 10px 10px 0; margin-left: 0; }
+        .bk-cal-day.bk-solo { border-radius: 10px !important; }
+        .bk-cal-day.bk-inrange { background: var(--accent-soft) !important; color: var(--accent) !important; border-radius: 0; margin-left: 0; margin-right: 0; }
+        .bk-cal-day-num { font-size: 0.86rem; font-weight: 500; line-height: 1.1; }
+        .bk-urgency-badge { font-size: 0.62rem; font-weight: 700; line-height: 1; padding: 2px 4px; border-radius: 4px; margin-top: 3px; letter-spacing: -0.01em; white-space: nowrap; }
+        .bk-urgency-badge.last-1 { background: #ffedd5; color: #c2410c; border: 1px solid rgba(194, 65, 12, 0.25); }
+        .bk-urgency-badge.last-2 { background: #fef3c7; color: #b45309; border: 1px solid rgba(180, 83, 9, 0.25); }
+        .bk-urgency-badge.sold-out { background: #f3f4f6; color: #9ca3af; font-weight: 500; }
+        .bk-cal-day.bk-checkin .bk-urgency-badge, .bk-cal-day.bk-checkout .bk-urgency-badge { background: rgba(255, 255, 255, 0.3); color: #fff; border-color: transparent; }
         .bk-cal-foot { padding: 18px 28px; border-top: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
         .bk-wa-help { display: inline-flex; align-items: center; gap: 8px; color: #25D366; font-size: 0.8rem; font-weight: 500; text-decoration: none; padding: 9px 18px; border: 1px solid #25D366; border-radius: 100px; transition: var(--transition); }
         .bk-wa-help:hover { background: #25D366; color: var(--white); }
@@ -3977,6 +3985,8 @@
         buildArt();
         // Booking Wizard Step 1 cards
         buildBkAccGrid();
+        // Fetch fresh Airbnb & KepLead availability in background
+        fetchLiveAirbnbOccupancy();
 
         // Re-apply language to static elements (use innerHTML for values that contain HTML tags)
         document.querySelectorAll('[data-lang-'+L+']').forEach(function(e){
@@ -4104,15 +4114,151 @@
 
     // ═══════════════════ BOOKING WIZARD ═══════════════════
     var BK = { step:1, acc:null, checkin:null, checkout:null, pm:null, calYear:new Date().getFullYear(), calMonth:new Date().getMonth() };
-    var BK_BLOCKED = [
-        '2026-09-05','2026-09-06','2026-09-07','2026-09-08',
-        '2026-09-15','2026-09-16','2026-09-17',
-        '2026-09-22','2026-09-23','2026-09-24','2026-09-25',
-        '2026-10-02','2026-10-03','2026-10-04',
-        '2026-10-16','2026-10-17','2026-10-18',
-        '2026-11-01','2026-11-02','2026-11-14','2026-11-15','2026-11-16'
-    ];
-    function bkIsBlocked(ds){return BK_BLOCKED.indexOf(ds)>-1;}
+
+    // ═══════════════════ AIRBNB & KEPLEAD LIVE AVAILABILITY ═══════════════════
+    // Glamping Anasazi:
+    // Style 0: 'suite' (Cabañas 1-6, 6 unidades en total)
+    // Style 1: 'rooftop' (Cabañas 7-10, 4 unidades en total)
+    var ANASAZI_OCCUPANCY = {
+        suite: {
+            "2026-10-31":["G-01","G-02","G-03","G-04","G-05","G-06"],
+            "2026-11-07":["G-01","G-02","G-03","G-04","G-05","G-06"],
+            "2026-11-14":["G-01","G-02","G-03","G-04","G-05","G-06"],
+            "2026-11-21":["G-01","G-02","G-03","G-04","G-05","G-06"],
+            "2026-11-28":["G-01","G-02","G-03","G-04","G-05","G-06"],
+            "2026-12-05":["G-01","G-02","G-03","G-04","G-05","G-06"],
+            "2026-12-12":["G-01","G-02","G-03","G-04","G-05","G-06"],
+            "2026-12-18":["G-01","G-02","G-03","G-04","G-05"],
+            "2026-12-19":["G-01","G-02","G-03","G-04","G-05","G-06"],
+            "2026-11-13":["G-02","G-06"],
+            "2026-11-20":["G-02"],
+            "2026-10-30":["G-02","G-03","G-06"],
+            "2026-11-15":["G-02","G-03","G-04","G-05","G-06"],
+            "2026-11-27":["G-05","G-06"],
+            "2026-12-20":["G-05","G-06"],
+            "2026-12-21":["G-05","G-06"],
+            "2026-11-01":["G-06","G-05"],
+            "2026-12-26":["G-06"],
+            "2026-11-17":["G-06"],
+            "2026-11-18":["G-06"],
+            "2026-11-05":["G-06"],
+            "2027-02-27":["G-06"],
+            "2026-11-22":["G-02"],
+            "2026-11-23":["G-02"]
+        },
+        rooftop: {
+            "2026-11-06":["G-07","G-10","G-08"],
+            "2026-10-29":["G-07"],
+            "2026-10-30":["G-07","G-08","G-09","G-10"],
+            "2026-10-31":["G-07","G-08","G-09","G-10"],
+            "2026-11-01":["G-07","G-08"],
+            "2026-11-07":["G-07","G-08","G-09","G-10"],
+            "2026-11-08":["G-07","G-08"],
+            "2026-11-09":["G-07","G-08"],
+            "2026-11-13":["G-07","G-08","G-09","G-10"],
+            "2026-11-14":["G-07","G-08","G-09","G-10"],
+            "2026-11-21":["G-07","G-08","G-09","G-10"],
+            "2026-11-27":["G-07","G-09"],
+            "2026-11-28":["G-07","G-08","G-09","G-10"],
+            "2026-12-05":["G-07","G-08","G-09","G-10"],
+            "2026-12-12":["G-07","G-08","G-09","G-10"],
+            "2026-12-19":["G-07","G-08","G-09","G-10"],
+            "2026-12-20":["G-07"],
+            "2026-12-26":["G-07"],
+            "2026-12-31":["G-07"],
+            "2027-03-26":["G-07","G-08"],
+            "2027-03-27":["G-07","G-08"],
+            "2027-05-01":["G-07","G-08","G-09"],
+            "2027-05-02":["G-07","G-08","G-09"],
+            "2026-11-15":["G-08"],
+            "2026-11-10":["G-08"],
+            "2026-12-24":["G-09"],
+            "2026-11-03":["G-08"],
+            "2026-11-05":["G-08"]
+        }
+    };
+
+    // Load cached occupancy if present in browser
+    try {
+        var cachedOcc = localStorage.getItem('anasazi_live_occupancy');
+        if (cachedOcc) {
+            var parsed = JSON.parse(cachedOcc);
+            if (parsed && parsed.suite && parsed.rooftop) ANASAZI_OCCUPANCY = parsed;
+        }
+    } catch(e) {}
+
+    function fetchLiveAirbnbOccupancy() {
+        var NOCODB_URL = 'https://nocodb.keplead.com/api/v2/tables/mjks1fw53pp9z9e/records?where=(tenant_id,eq,glamping-anasazi)&limit=250&_t=' + Date.now();
+        var NOCODB_TOKEN = 'KyVDo-wpuDO5bQhDkpPEW3EXh1W8cDSP_VAiomGJ';
+        
+        fetch(NOCODB_URL, {
+            method: 'GET',
+            headers: {
+                'xc-token': NOCODB_TOKEN,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            var list = data.list || data.records || [];
+            if (!list || !list.length) return;
+            
+            var newOcc = { suite: {}, rooftop: {} };
+            list.forEach(function(deal) {
+                if (!deal.checkin_date || !deal.checkout_date) return;
+                var st = String(deal.stage || '').toLowerCase();
+                if (['closed_lost', 'lost', 'dead_file'].includes(st)) return;
+                
+                var roomNum = deal.room_id || '';
+                var cat = (roomNum.includes('07') || roomNum.includes('08') || roomNum.includes('09') || roomNum.includes('10') || String(deal.room_name).toLowerCase().includes('rooftop')) ? 'rooftop' : 'suite';
+                
+                var cur = new Date(deal.checkin_date + 'T12:00:00');
+                var out = new Date(deal.checkout_date + 'T12:00:00');
+                while (cur < out) {
+                    var ds = cur.toISOString().slice(0, 10);
+                    if (!newOcc[cat][ds]) newOcc[cat][ds] = [];
+                    var uid = roomNum || ('deal-' + deal.Id);
+                    if (newOcc[cat][ds].indexOf(uid) === -1) newOcc[cat][ds].push(uid);
+                    cur.setDate(cur.getDate() + 1);
+                }
+            });
+            
+            ANASAZI_OCCUPANCY = newOcc;
+            try {
+                localStorage.setItem('anasazi_live_occupancy', JSON.stringify(newOcc));
+            } catch(e) {}
+            
+            // Re-render if calendar is currently visible in step 2
+            if (BK.step === 2) {
+                renderBkCal();
+            }
+        })
+        .catch(function(err) {
+            console.log('Airbnb occupancy live sync fallback to cached data:', err);
+        });
+    }
+
+    function bkGetAvailability(ds, accIdx) {
+        var style = (accIdx === 1) ? 'rooftop' : 'suite';
+        var total = (style === 'rooftop') ? 4 : 6;
+        var occupiedUnits = (ANASAZI_OCCUPANCY[style] && ANASAZI_OCCUPANCY[style][ds]) ? ANASAZI_OCCUPANCY[style][ds].length : 0;
+        var left = Math.max(0, total - occupiedUnits);
+        return {
+            style: style,
+            total: total,
+            occupied: occupiedUnits,
+            left: left,
+            isBlocked: left <= 0,
+            isLastOne: left === 1,
+            isLastTwo: left === 2
+        };
+    }
+
+    function bkIsBlocked(ds) {
+        var avail = bkGetAvailability(ds, BK.acc || 0);
+        return avail.isBlocked;
+    }
+
     function bkDateStr(y,m,d){return y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');}
     function bkDateLabel(dt){if(!dt)return'';return dt.toLocaleDateString(L==='es'?'es-MX':'en-US',{day:'numeric',month:'short',year:'numeric'});}
 
@@ -4172,18 +4318,33 @@
         for(var i=0;i<firstDay;i++)h+='<div class="bk-cal-day bk-empty"></div>';
         for(var d=1;d<=daysInM;d++){
             var ds=bkDateStr(y,m,d), dt=new Date(y,m,d);
-            var cls=['bk-cal-day'], blocked=bkIsBlocked(ds), past=dt<today, onclick='';
-            if(blocked)cls.push('bk-blocked');
-            else if(past)cls.push('bk-past');
-            else{
+            var avail=bkGetAvailability(ds, BK.acc || 0);
+            var cls=['bk-cal-day'], past=dt<today, onclick='';
+            var badgeHtml = '';
+            
+            if(past) {
+                cls.push('bk-past');
+            } else if(avail.isBlocked) {
+                cls.push('bk-blocked');
+                badgeHtml = '<span class="bk-urgency-badge sold-out">' + (L === 'es' ? 'Agotado' : 'Sold out') + '</span>';
+            } else {
                 if(ds===todayStr)cls.push('bk-today');
-                if(ds===ciStr&&ds===coStr){cls.push('bk-checkin');cls.push('bk-solo');}
+                if(ds===ciStr&&ds===coStr){cls.push('bk-checkin','bk-solo');}
                 else if(ds===ciStr)cls.push('bk-checkin');
                 else if(ds===coStr)cls.push('bk-checkout');
                 else if(BK.checkin&&BK.checkout&&dt>BK.checkin&&dt<BK.checkout)cls.push('bk-inrange');
-                onclick=' onclick="bkCalClick(\''+ds+'\')"';
+                
+                if (avail.isLastOne) {
+                    badgeHtml = '<span class="bk-urgency-badge last-1">' + (L === 'es' ? 'Última' : 'Last 1') + '</span>';
+                } else if (avail.isLastTwo) {
+                    badgeHtml = '<span class="bk-urgency-badge last-2">' + (L === 'es' ? 'Últimas 2' : 'Last 2') + '</span>';
+                }
+                onclick=' onclick="bkCalClick(\''+ds+'\')" onmouseenter="bkCalHover(\''+ds+'\')"';
             }
-            h+='<div class="'+cls.join(' ')+'"'+onclick+'>'+d+'</div>';
+            h+='<div class="'+cls.join(' ')+'"'+onclick+' data-ds="'+ds+'">' +
+                '<span class="bk-cal-day-num">'+d+'</span>' +
+                badgeHtml +
+                '</div>';
         }
         var daysEl=document.getElementById('bkCalDays'); if(daysEl)daysEl.innerHTML=h;
         var btn=document.getElementById('bkConfirmDates'); if(btn)btn.classList.toggle('show',!!(BK.checkin&&BK.checkout));
@@ -4192,6 +4353,18 @@
             if(!BK.checkin)hint.textContent=L==='es'?'Selecciona tu fecha de llegada':'Select your check-in date';
             else if(!BK.checkout)hint.textContent=L==='es'?'Ahora selecciona tu fecha de salida':'Now select your check-out date';
             else hint.textContent=(L==='es'?'Llegada: ':'Check-in: ')+bkDateLabel(BK.checkin)+'   →   '+(L==='es'?'Salida: ':'Check-out: ')+bkDateLabel(BK.checkout);
+        }
+    }
+
+    function bkCalHover(ds) {
+        var hint = document.getElementById('bkCalHint');
+        if (!hint || (BK.checkin && BK.checkout)) return;
+        var avail = bkGetAvailability(ds, BK.acc || 0);
+        var dateFormatted = bkDateLabel(new Date(ds + 'T12:00:00'));
+        if (avail.isLastOne) {
+            hint.innerHTML = (L === 'es' ? '🔥 <strong>¡Última cabaña disponible</strong> para el ' : '🔥 <strong>Last cabin available</strong> for ') + dateFormatted + '!';
+        } else if (avail.isLastTwo) {
+            hint.innerHTML = (L === 'es' ? '⚡ <strong>¡Últimas 2 cabañas disponibles</strong> para el ' : '⚡ <strong>Only 2 cabins left</strong> for ') + dateFormatted + '!';
         }
     }
 
@@ -4209,8 +4382,17 @@
             if(dt<=BK.checkin){BK.checkin=dt;BK.checkout=null;}
             else{
                 var hasBlocked=false, cur=new Date(BK.checkin); cur.setDate(cur.getDate()+1);
-                while(cur<dt){var cs=bkDateStr(cur.getFullYear(),cur.getMonth(),cur.getDate());if(bkIsBlocked(cs)){hasBlocked=true;break;}cur.setDate(cur.getDate()+1);}
-                if(hasBlocked){BK.checkin=dt;BK.checkout=null;}else BK.checkout=dt;
+                while(cur<dt){
+                    var cs=bkDateStr(cur.getFullYear(),cur.getMonth(),cur.getDate());
+                    if(bkIsBlocked(cs)){hasBlocked=true;break;}
+                    cur.setDate(cur.getDate()+1);
+                }
+                if(hasBlocked){
+                    alert(L === 'es' ? 'Una de las noches en ese rango está agotada para este estilo de cabaña. Por favor selecciona fechas continuas disponibles.' : 'One of the nights in that range is sold out for this cabin style. Please select continuous available dates.');
+                    BK.checkin=dt;BK.checkout=null;
+                } else {
+                    BK.checkout=dt;
+                }
             }
         }
         renderBkCal();
