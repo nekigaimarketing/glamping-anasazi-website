@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reglamento de Alberca Techada Climatizada & Cenote — Glamping Anasazi</title>
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #f0ebe3;
+            --white: #faf8f5;
+            --cream: #f5f0e8;
+            --text: #2c1810;
+            --text-soft: #6b5744;
+            --text-muted: #9c8b7a;
+            --accent: #b85c38;
+            --accent-deep: #8c3f22;
+            --border: #d9cdbf;
+            --border-light: #e8dfd3;
+            --shadow-soft: 0 4px 20px rgba(44, 24, 16, 0.06);
+            --shadow-medium: 0 12px 36px rgba(44, 24, 16, 0.1);
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Outfit', sans-serif;
+            --font-accent: 'Playfair Display', Georgia, serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            padding: 40px 20px 80px;
+        }
+
+        .reg-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 48px;
+            box-shadow: var(--shadow-medium);
+        }
+
+        @media (max-width: 640px) {
+            .reg-container { padding: 28px 20px; }
+        }
+
+        .reg-header {
+            text-align: center;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 28px;
+            margin-bottom: 32px;
+        }
+
+        .reg-logo {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            object-fit: contain;
+            margin-bottom: 14px;
+            border: 1px solid var(--border);
+            background: var(--white);
+        }
+
+        .reg-eyebrow {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .reg-title {
+            font-family: var(--font-accent);
+            font-size: 2.2rem;
+            color: var(--text);
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        .reg-subtitle {
+            font-size: 0.92rem;
+            color: var(--text-soft);
+            max-width: 580px;
+            margin: 0 auto;
+        }
+
+        .reg-hours-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(184, 92, 56, 0.1);
+            color: var(--accent-deep);
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-top: 14px;
+            border: 1px solid rgba(184, 92, 56, 0.2);
+        }
+
+        .reg-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 36px;
+        }
+
+        .reg-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            background: var(--cream);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 16px 20px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .reg-item:hover {
+            transform: translateX(4px);
+            border-color: var(--accent);
+        }
+
+        .reg-item-icon {
+            font-size: 1.3rem;
+            line-height: 1;
+            margin-top: 2px;
+            color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .reg-item-text {
+            font-size: 0.95rem;
+            color: var(--text);
+            font-weight: 400;
+        }
+
+        .reg-item-text strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .reg-notice {
+            background: rgba(184, 92, 56, 0.08);
+            border-left: 4px solid var(--accent);
+            padding: 16px 20px;
+            border-radius: 0 12px 12px 0;
+            font-size: 0.9rem;
+            color: var(--text-soft);
+            margin-bottom: 32px;
+        }
+
+        .reg-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+            border-top: 1px solid var(--border-light);
+            padding-top: 24px;
+        }
+
+        .btn-reg {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 100px;
+            font-family: var(--font-body);
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-reg-primary {
+            background: var(--accent);
+            color: var(--white);
+            border: none;
+            box-shadow: 0 4px 14px rgba(184, 92, 56, 0.3);
+        }
+
+        .btn-reg-primary:hover {
+            background: var(--accent-deep);
+            transform: translateY(-2px);
+        }
+
+        .btn-reg-ghost {
+            background: transparent;
+            color: var(--text-soft);
+            border: 1px solid var(--border);
+        }
+
+        .btn-reg-ghost:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="reg-container">
+        <header class="reg-header">
+            <img src="assets/images/logo.png" alt="Glamping Anasazi" class="reg-logo">
+            <div class="reg-eyebrow">Bienestar, Seguridad e Higiene</div>
+            <h1 class="reg-title">Reglamento de Alberca Techada Climatizada & Cenote</h1>
+            <p class="reg-subtitle">Espacio zen diseñado exclusivamente para la relajación, desconexión y disfrute de nuestros huéspedes en un entorno seguro y templado.</p>
+            <div class="reg-hours-badge">
+                <span>🕒</span> Horario de Operación: 8:00 AM — 9:00 PM
+            </div>
+        </header>
+
+        <div class="reg-list">
+            <div class="reg-item">
+                <span class="reg-item-icon">🏊‍♂️</span>
+                <div class="reg-item-text"><strong>Acceso Exclusivo para Huéspedes:</strong> El uso del cenote y alberca techada climatizada es de uso reservado única y exclusivamente para personas registradas en Glamping Anasazi.</div>
+            </div>
+
+            <div class="reg-item">
+                <span class="reg-item-icon">🩱</span>
+                <div class="reg-item-text"><strong>Traje de Baño Obligatorio:</strong> Es requisito indispensable ingresar con vestimenta de natación apropiada (traje de baño o lycra deportiva). Prohibido entrar con ropa de calle o mezclilla.</div>
+            </div>
+
+            <div class="reg-item">
+                <span class="reg-item-icon">👶</span>
+                <div class="reg-item-text"><strong>Supervisión de Menores:</strong> Los niños menores de 12 años deben estar acompañados y supervisados en todo momento por un adulto o tutor responsable.</div>
+            </div>
+
+            <div class="reg-item">
+                <span class="reg-item-icon">🩲</span>
+                <div class="reg-item-text"><strong>Pañal Acuático para Bebés:</strong> Es obligatorio el uso de pañal acuático especial para natación en todos los infantes para preservar la pureza y filtración del agua climatizada.</div>
+            </div>
+
+            <div class="reg-item">
+                <span class="reg-item-icon">🚫</span>
+                <div class="reg-item-text"><strong>Cero Objetos de Vidrio:</strong> Por seguridad de todos, queda estrictamente prohibido introducir botellas, vasos, copas o recipientes de cristal en la zona húmeda y camastros.</div>
+            </div>
+
+            <div class="reg-item">
+                <span class="reg-item-icon">🍷</span>
+                <div class="reg-item-text"><strong>Alimentos y Bebidas:</strong> Prohibido ingerir alimentos o bebidas alcohólicas dentro del agua. Puedes disfrutar tus consumos en las mesas de descanso exteriores adyacentes.</div>
+            </div>
+
+            <div class="reg-item">
+                <span class="reg-item-icon">⚠️</span>
+                <div class="reg-item-text"><strong>Seguridad y Clavados:</strong> Prohibido correr en el piso húmedo, empujar a otros o realizar clavados. El acceso al agua debe realizarse con calma usando las escaleras o rampa.</div>
+            </div>
+
+            <div class="reg-item">
+                <span class="reg-item-icon">🚭</span>
+                <div class="reg-item-text"><strong>Espacio 100% Libre de Humo:</strong> Queda prohibido fumar cigarros tradicionales, puros o vapeadores electrónicos dentro del recinto techado de la alberca.</div>
+            </div>
+
+            <div class="reg-item">
+                <span class="reg-item-icon">🎵</span>
+                <div class="reg-item-text"><strong>Ambiente de Silencio Zen:</strong> No se permite el uso de bocinas portátiles con música a volumen alto. Cuidamos la atmósfera de meditación, descanso y desconexión sonora.</div>
+            </div>
+
+            <div class="reg-item">
+                <span class="reg-item-icon">🚿</span>
+                <div class="reg-item-text"><strong>Ducha Previa:</strong> Por higiene de todos los visitantes, agradecemos tomar una ducha rápida antes de sumergirte para eliminar cremas, bloqueadores o polvo del desierto.</div>
+            </div>
+        </div>
+
+        <div class="reg-notice">
+            📞 <strong>Asistencia & Toallas de Alberca:</strong> Si requieres toallas corporales adicionales o atención del host, solicítalas por WhatsApp a Recepción: <a href="https://wa.me/526562973553" target="_blank" style="color:var(--accent);font-weight:700;text-decoration:none;">656 297-3553</a> o desde tu Portal de Huéspedes.
+        </div>
+
+        <footer class="reg-actions">
+            <a href="index.html" class="btn-reg btn-reg-ghost">← Volver al Sitio Web</a>
+            <div style="display:flex;gap:10px;">
+                <a href="assets/reglamento_alberca.pdf" download class="btn-reg btn-reg-ghost">📄 Descargar PDF</a>
+                <a href="guest.html" class="btn-reg btn-reg-primary">🔑 Portal Huéspedes</a>
+            </div>
+        </footer>
+    </div>
+
+</body>
+</html>

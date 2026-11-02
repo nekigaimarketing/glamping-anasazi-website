@@ -1669,6 +1669,39 @@
             color: #1b5e20;
         }
 
+        .floating-lang-pill {
+            position: fixed;
+            bottom: 64px;
+            left: 30px;
+            z-index: 1000;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(250, 248, 245, 0.94);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            padding: 5px 12px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            color: var(--text-soft);
+            box-shadow: 0 4px 14px rgba(44, 24, 16, 0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .floating-lang-pill:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+            box-shadow: 0 6px 18px rgba(184, 92, 56, 0.16);
+            color: var(--text);
+        }
+        .floating-lang-pill span.on {
+            color: var(--accent-deep);
+            font-weight: 700;
+        }
+
         
         
         /* ═══════════════════ RESTAURANT & BLACK OLIVE VISUAL UPGRADE ═══════════════════ */
@@ -2373,6 +2406,41 @@
         .bk-step2-sub { font-size: 0.88rem; color: var(--text-muted); text-align: center; margin-bottom: 12px; min-height: 22px; transition: color 0.3s; }
         .bk-step2-acc-info { text-align: center; margin-bottom: 28px; }
         .bk-step2-acc-chip { display: inline-flex; align-items: center; gap: 8px; background: var(--accent-soft); color: var(--accent); font-size: 0.8rem; font-weight: 500; padding: 8px 18px; border-radius: 100px; }
+        .btn-toggle-cabin-style {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 18px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            text-decoration: none;
+        }
+        .btn-toggle-cabin-style.brick {
+            background: var(--accent);
+            color: var(--white);
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(184, 92, 56, 0.28);
+        }
+        .btn-toggle-cabin-style.brick:hover {
+            background: var(--accent-deep);
+            transform: translateY(-1px);
+        }
+        .btn-toggle-cabin-style.light {
+            background: rgba(255, 255, 255, 0.85);
+            color: var(--text-soft);
+            border-color: var(--border);
+            backdrop-filter: blur(8px);
+        }
+        .btn-toggle-cabin-style.light:hover {
+            background: var(--white);
+            color: var(--text);
+            border-color: var(--accent);
+            transform: translateY(-1px);
+        }
         .bk-cal-wrap { max-width: 680px; margin: 0 auto; }
         .bk-cal-box { background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-medium); overflow: hidden; }
         .bk-cal-head { display: flex; align-items: center; justify-content: space-between; padding: 22px 28px; border-bottom: 1px solid var(--border-light); }
@@ -2731,10 +2799,6 @@
                 <a class="nav-link" onclick="go('investments')" data-lang-es="Inversiones" data-lang-en="Investments">Inversiones</a>
                 <a class="nav-link nav-guest-link" href="guest.html" style="color:var(--accent);font-weight:600;display:inline-flex;align-items:center;gap:4px;" data-lang-es="🔑 Huéspedes" data-lang-en="🔑 Guests">🔑 Huéspedes</a>
                 <a class="nav-link nav-cta" onclick="go('booking')" data-lang-es="Reservar" data-lang-en="Book">Reservar</a>
-                <div class="lang-switch" onclick="toggleLang()">
-                    <span class="on" id="es1">ES</span>
-                    <span id="en1">EN</span>
-                </div>
             </div>
             <div class="hamburger" onclick="toggleMobile()">
                 <span></span><span></span><span></span>
@@ -2812,13 +2876,13 @@
                             <span>🎬 Da clic en los botones de abajo para ver un recorrido en video:</span>
                         </p>
                         <div class="essence-tour-btns">
-                            <button class="btn-tour-video featured" onclick="openVideoModal('assets/videos/recorrido_glamping_suites.mp4', 'Recorrido en Video · Glamping Suites con Rooftop')">
+                            <button class="btn-tour-video featured" onclick="openVideoModal('assets/videos/recorrido_glamping_suites.mp4', 'Recorrido en Video · Rooftop Suite')">
                                 <svg viewBox="0 0 24 24"><path d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 010 1.972l-11.54 6.347a1.125 1.125 0 01-1.667-.986V5.653z"/></svg>
-                                <span data-lang-es="⭐ Recorrido Glamping Suites" data-lang-en="⭐ Glamping Suites Tour">⭐ Recorrido Glamping Suites</span>
+                                <span data-lang-es="⭐ Recorrido Rooftop Suite" data-lang-en="⭐ Rooftop Suite Tour">⭐ Recorrido Rooftop Suite</span>
                             </button>
-                            <button class="btn-tour-video secondary" onclick="openVideoModal('assets/videos/recorrido_glamping_basico.mp4', 'Recorrido en Video · Glamping Básico')">
+                            <button class="btn-tour-video secondary" onclick="openVideoModal('assets/videos/recorrido_glamping_basico.mp4', 'Recorrido en Video · Glamping Suite')">
                                 <svg viewBox="0 0 24 24"><path d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 010 1.972l-11.54 6.347a1.125 1.125 0 01-1.667-.986V5.653z"/></svg>
-                                <span data-lang-es="Recorrido Glampings" data-lang-en="Glampings Tour">Recorrido Glampings</span>
+                                <span data-lang-es="Recorrido Glamping Suite" data-lang-en="Glamping Suite Tour">Recorrido Glamping Suite</span>
                             </button>
                         </div>
                     </div>
@@ -2969,6 +3033,69 @@
             <div class="ad-section reveal">
                 <h2 data-lang-es="Servicios Extra" data-lang-en="Extra Services">Servicios Extra</h2>
                 <div class="services-grid" id="svcGrid"></div>
+            </div>
+
+            <!-- CABAÑAS DISPONIBLES SHOWCASE -->
+            <div class="ad-section reveal">
+                <div class="section-head" style="text-align:left;margin-bottom:32px;">
+                    <p class="section-eyebrow" data-lang-es="Tu Refugio en el Desierto" data-lang-en="Your Desert Sanctuary">Tu Refugio en el Desierto</p>
+                    <h2 class="section-title" data-lang-es="Nuestras Cabañas Disponibles" data-lang-en="Our Available Cabins">Nuestras Cabañas Disponibles</h2>
+                    <p style="font-size:0.95rem;color:var(--text-soft);max-width:700px;margin-top:8px;" data-lang-es="Elige entre nuestra íntima Glamping Suite o la majestuosa Rooftop Suite con terraza superior para contemplar el cielo nocturno." data-lang-en="Choose between our intimate Glamping Suite or the majestic Rooftop Suite with an upper terrace to gaze at the starry night sky.">Elige entre nuestra íntima Glamping Suite o la majestuosa Rooftop Suite con terraza superior para contemplar el cielo nocturno.</p>
+                </div>
+
+                <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:28px;">
+                    <!-- CABAÑA 1: GLAMPING SUITE -->
+                    <div style="background:var(--white);border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:var(--shadow-soft);transition:transform 0.3s ease, box-shadow 0.3s ease;" class="cabin-showcase-card">
+                        <div style="position:relative;height:240px;overflow:hidden;">
+                            <img src="assets/images/accommodation_1.jpg" alt="Glamping Suite Anasazi" style="width:100%;height:100%;object-fit:cover;">
+                            <span style="position:absolute;top:14px;left:14px;background:rgba(44,24,16,0.85);backdrop-filter:blur(8px);color:#fff;font-size:0.75rem;font-weight:700;padding:5px 12px;border-radius:100px;letter-spacing:0.05em;">
+                                Cabañas 1 a 6 · 6 Unidades
+                            </span>
+                        </div>
+                        <div style="padding:24px;">
+                            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+                                <div>
+                                    <h3 style="font-family:var(--font-accent);font-size:1.45rem;color:var(--text);margin:0;" data-lang-es="Glamping Suite" data-lang-en="Glamping Suite">Glamping Suite</h3>
+                                    <span style="font-size:0.82rem;color:var(--text-muted);" data-lang-es="Confort & Silencio Zen" data-lang-en="Zen Comfort & Silence">Confort & Silencio Zen</span>
+                                </div>
+                                <div style="text-align:right;">
+                                    <div style="font-family:var(--font-accent);font-size:1.35rem;font-weight:700;color:var(--accent);">$3,000</div>
+                                    <span style="font-size:0.75rem;color:var(--text-muted);" data-lang-es="MXN / noche" data-lang-en="MXN / night">MXN / noche</span>
+                                </div>
+                            </div>
+                            <p style="font-size:0.88rem;color:var(--text-soft);line-height:1.6;margin-bottom:18px;" data-lang-es="Suite domo climatizada con cama king size, jacuzzi privado de hidromasaje, baño completo con cancel de cristal, fogatero privado y terraza con vista a las fuentes del lago." data-lang-en="Climate-controlled dome suite with king size bed, private hydromassage hot tub, full bathroom with glass enclosure, private fire pit, and terrace overlooking the lake fountains.">Suite domo climatizada con cama king size, jacuzzi privado de hidromasaje, baño completo con cancel de cristal, fogatero privado y terraza con vista a las fuentes del lago.</p>
+                            <button type="button" class="btn-hero btn-hero-primary" style="width:100%;justify-content:center;padding:12px 20px;border-radius:100px;font-size:0.88rem;font-weight:600;cursor:pointer;" onclick="BK.acc=0;go('booking');bkGoStep(2);" data-lang-es="Reservar Glamping Suite →" data-lang-en="Book Glamping Suite →">
+                                Reservar Glamping Suite →
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- CABAÑA 2: ROOFTOP SUITE -->
+                    <div style="background:var(--white);border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:var(--shadow-soft);transition:transform 0.3s ease, box-shadow 0.3s ease;" class="cabin-showcase-card">
+                        <div style="position:relative;height:240px;overflow:hidden;">
+                            <img src="assets/images/accommodation_2.jpg" alt="Rooftop Suite Anasazi" style="width:100%;height:100%;object-fit:cover;">
+                            <span style="position:absolute;top:14px;left:14px;background:var(--accent);color:#fff;font-size:0.75rem;font-weight:700;padding:5px 12px;border-radius:100px;letter-spacing:0.05em;box-shadow:0 2px 8px rgba(184,92,56,0.4);">
+                                ⭐ Cabañas 7 a 10 · 4 Unidades
+                            </span>
+                        </div>
+                        <div style="padding:24px;">
+                            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+                                <div>
+                                    <h3 style="font-family:var(--font-accent);font-size:1.45rem;color:var(--text);margin:0;" data-lang-es="Rooftop Suite" data-lang-en="Rooftop Suite">Rooftop Suite</h3>
+                                    <span style="font-size:0.82rem;color:var(--text-muted);" data-lang-es="Bajo el Cielo Estrellado" data-lang-en="Under the Starlit Sky">Bajo el Cielo Estrellado</span>
+                                </div>
+                                <div style="text-align:right;">
+                                    <div style="font-family:var(--font-accent);font-size:1.35rem;font-weight:700;color:var(--accent);">$3,500</div>
+                                    <span style="font-size:0.75rem;color:var(--text-muted);" data-lang-es="MXN / noche" data-lang-en="MXN / night">MXN / noche</span>
+                                </div>
+                            </div>
+                            <p style="font-size:0.88rem;color:var(--text-soft);line-height:1.6;margin-bottom:18px;" data-lang-es="Experiencia de dos niveles con rooftop privado exclusivo para observación astronómica de 360°, cama king size, jacuzzi exterior climatizado, asador y fogatero individual." data-lang-en="Two-story elevated experience featuring an exclusive private rooftop for 360° stargazing, king size bed, heated outdoor jacuzzi, barbecue grill, and private fire pit.">Experiencia de dos niveles con rooftop privado exclusivo para observación astronómica de 360°, cama king size, jacuzzi exterior climatizado, asador y fogatero individual.</p>
+                            <button type="button" class="btn-hero btn-hero-primary" style="width:100%;justify-content:center;padding:12px 20px;border-radius:100px;font-size:0.88rem;font-weight:600;cursor:pointer;" onclick="BK.acc=1;go('booking');bkGoStep(2);" data-lang-es="Reservar Rooftop Suite →" data-lang-en="Book Rooftop Suite →">
+                                Reservar Rooftop Suite →
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- CABAÑAS CREEL PROMO ACCOMMODATION -->
@@ -3228,7 +3355,14 @@
             <div class="bk-step-panel" id="bk-panel-2">
                 <h2 class="bk-step2-title" data-lang-es="Elige tus fechas" data-lang-en="Choose your dates">Elige tus fechas</h2>
                 <p class="bk-step2-sub" id="bkCalHint" data-lang-es="Selecciona tu fecha de llegada" data-lang-en="Select your check-in date">Selecciona tu fecha de llegada</p>
-                <div class="bk-step2-acc-info"><div class="bk-step2-acc-chip" id="bkSelectedAccChip">—</div></div>
+                <div class="bk-step2-acc-info">
+                    <div style="display:inline-flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;">
+                        <div class="bk-step2-acc-chip" id="bkSelectedAccChip">—</div>
+                        <button type="button" id="bkCabinStyleSwitcherBtn" class="btn-toggle-cabin-style brick" onclick="bkToggleCabinStyle()">
+                            Ver Suite con Rooftop →
+                        </button>
+                    </div>
+                </div>
                 <div class="bk-cal-wrap">
                     <div class="bk-cal-box">
                         <div class="bk-cal-head">
@@ -3327,6 +3461,15 @@
                     <li><a href="#" onclick="go('investments');return false" data-lang-es="Inversiones" data-lang-en="Investments">Inversiones</a></li>
                     <li><a href="https://wa.me/526562973553" target="_blank">WhatsApp</a></li>
                     <li><a href="https://airbnb.com" target="_blank">Airbnb</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 data-lang-es="Reglamentos" data-lang-en="Regulations">Reglamentos</h4>
+                <ul>
+                    <li><a href="reglamento-cabanas.html" target="_blank" data-lang-es="Reglamento Cabañas" data-lang-en="Cabin Regulations">Reglamento Cabañas</a></li>
+                    <li><a href="reglamento-alberca.html" target="_blank" data-lang-es="Reglamento Alberca" data-lang-en="Pool Regulations">Reglamento Alberca</a></li>
+                    <li><a href="assets/reglamento_cabanas.pdf" download data-lang-es="Descargar PDF Cabañas" data-lang-en="Download Cabin PDF">Descargar PDF Cabañas</a></li>
+                    <li><a href="assets/reglamento_alberca.pdf" download data-lang-es="Descargar PDF Alberca" data-lang-en="Download Pool PDF">Descargar PDF Alberca</a></li>
                 </ul>
             </div>
             <div class="footer-col">
@@ -3533,13 +3676,32 @@
     }
 
     function openBookingFromFloat() {
-        var cin = document.getElementById('floatCheckin').value;
-        var cout = document.getElementById('floatCheckout').value;
-        var gst = document.getElementById('floatGuests').value;
-        if(cin) document.getElementById('bkCheckin').value = cin;
-        if(cout) document.getElementById('bkCheckout').value = cout;
-        if(gst) document.getElementById('bkGuests').value = gst;
+        var cinVal = document.getElementById('floatCheckin') ? document.getElementById('floatCheckin').value : '';
+        var coutVal = document.getElementById('floatCheckout') ? document.getElementById('floatCheckout').value : '';
+        var gstVal = document.getElementById('floatGuests') ? document.getElementById('floatGuests').value : '2';
+        
+        if (cinVal) {
+            var p1 = cinVal.split('-');
+            if (p1.length === 3) {
+                BK.checkin = new Date(parseInt(p1[0]), parseInt(p1[1]) - 1, parseInt(p1[2]));
+                BK.calYear = BK.checkin.getFullYear();
+                BK.calMonth = BK.checkin.getMonth();
+            }
+        }
+        if (coutVal) {
+            var p2 = coutVal.split('-');
+            if (p2.length === 3) {
+                BK.checkout = new Date(parseInt(p2[0]), parseInt(p2[1]) - 1, parseInt(p2[2]));
+            }
+        }
+        if (document.getElementById('bkGuests') && gstVal) {
+            document.getElementById('bkGuests').value = gstVal;
+        }
+        if (BK.acc === null) {
+            BK.acc = 0; // Default to Suite
+        }
         go('booking');
+        bkGoStep(2);
     }
 
     async function submitBooking(event) {
@@ -3794,36 +3956,37 @@
             {q:{es:'¿Hay servicio de comida?',en:'Is there food service?'},a:{es:'Black Olive ofrece servicio de comida. Sábados y domingos sin reservación, lunes a viernes con reservación previa. Contacto: 656 827 5472.',en:'Black Olive offers food service. Sat-Sun without reservation, Mon-Fri with prior reservation. Contact: 656 827 5472.'}},
             {q:{es:'¿Puedo cancelar mi reserva?',en:'Can I cancel my reservation?'},a:{es:'Reservas directas: no reembolsables, solo cambio de fecha. Con 5 días o menos de anticipación, $500 MXN de penalización. Airbnb: sujeto a políticas de la plataforma.',en:'Direct bookings: non-refundable, date change only. 5 days or less notice, $500 MXN penalty. Airbnb: subject to platform policies.'}},
             {q:{es:'¿Cuántas personas por unidad?',en:'How many people per unit?'},a:{es:'Cada unidad tiene capacidad para 4 huéspedes con 2 camas queen size.',en:'Each unit has capacity for 4 guests with 2 queen size beds.'}},
-            {q:{es:'¿El lugar es seguro?',en:'Is the place safe?'},a:{es:'Sí, rancho privado bardeado con acceso controlado, cámaras de vigilancia, detectores de humo y monóxido de carbono, extintor, botiquín y personal disponible 24/7.',en:'Yes, private fenced ranch with controlled access, surveillance cameras, smoke and CO detectors, fire extinguisher, first aid kit, and 24/7 staff.'}}
+            {q:{es:'¿El lugar es seguro?',en:'Is the place safe?'},a:{es:'Sí, rancho privado bardeado con acceso controlado, cámaras de vigilancia, detectores de humo y monóxido de carbono, extintor, botiquín y personal disponible 24/7.',en:'Yes, private fenced ranch with controlled access, surveillance cameras, smoke and CO detectors, fire extinguisher, first aid kit, and 24/7 staff.'}},
+            {q:{es:'¿Cuáles son los reglamentos de cabañas y alberca?',en:'What are the cabin and pool regulations?'},a:{es:'Para garantizar el descanso, silencio y seguridad de todos los huéspedes en el desierto, contamos con normas oficiales. Puedes consultar y descargar los reglamentos completos aquí:<br><div style="margin-top:10px;display:flex;gap:12px;flex-wrap:wrap;"><a href="reglamento-cabanas.html" target="_blank" style="color:var(--accent);font-weight:700;text-decoration:none;">🏡 Ver Reglamento de Cabañas →</a><a href="reglamento-alberca.html" target="_blank" style="color:var(--accent);font-weight:700;text-decoration:none;">🏊‍♂️ Ver Reglamento de Alberca →</a></div>',en:'To ensure rest, silence, and safety for all guests in the desert, we have official guidelines. You can read and download the complete regulations here:<br><div style="margin-top:10px;display:flex;gap:12px;flex-wrap:wrap;"><a href="reglamento-cabanas.html" target="_blank" style="color:var(--accent);font-weight:700;text-decoration:none;">🏡 View Cabin Regulations →</a><a href="reglamento-alberca.html" target="_blank" style="color:var(--accent);font-weight:700;text-decoration:none;">🏊‍♂️ View Pool Regulations →</a></div>'}}
         ],
         gallery: [
             'assets/images/gallery/0078.jpg',
-            'assets/images/gallery/0079.jpg',
-            'assets/images/gallery/0082.jpg',
-            'assets/images/gallery/0089.jpg',
-            'assets/images/gallery/0090.jpg',
-            'assets/images/gallery/0091.jpg',
-            'assets/images/gallery/0093.jpg',
-            'assets/images/gallery/0094.jpg',
-            'assets/images/gallery/0098_copy.jpg',
-            'assets/images/gallery/0149.jpg',
-            'assets/images/gallery/0152.jpg',
-            'assets/images/gallery/0164.jpg',
-            'assets/images/gallery/0195.jpg',
-            'assets/images/gallery/0204.jpg',
-            'assets/images/gallery/0218.jpg',
             'assets/images/gallery/0241.jpg',
-            'assets/images/gallery/0243.jpg',
-            'assets/images/gallery/0244.jpg',
-            'assets/images/gallery/0245.jpg',
             'assets/images/gallery/dsc08691.jpg',
-            'assets/images/gallery/dsc08752.jpg',
-            'assets/images/gallery/dsc08762.jpg',
-            'assets/images/gallery/dsc08976.jpg',
-            'assets/images/gallery/dsc09021.jpg',
+            'assets/images/gallery/0089.jpg',
+            'assets/images/gallery/0152.jpg',
+            'assets/images/gallery/0245.jpg',
             'assets/images/gallery/dsc09028.jpg',
-            'assets/images/gallery/dsc09038.jpg',
-            'assets/images/gallery/l1124099.jpg'
+            'assets/images/gallery/0079.jpg',
+            'assets/images/gallery/0195.jpg',
+            'assets/images/gallery/dsc08752.jpg',
+            'assets/images/gallery/0091.jpg',
+            'assets/images/gallery/0243.jpg',
+            'assets/images/gallery/l1124099.jpg',
+            'assets/images/gallery/0082.jpg',
+            'assets/images/gallery/0149.jpg',
+            'assets/images/gallery/dsc08976.jpg',
+            'assets/images/gallery/0094.jpg',
+            'assets/images/gallery/0204.jpg',
+            'assets/images/gallery/0244.jpg',
+            'assets/images/gallery/dsc09021.jpg',
+            'assets/images/gallery/0090.jpg',
+            'assets/images/gallery/0164.jpg',
+            'assets/images/gallery/dsc08762.jpg',
+            'assets/images/gallery/0098_copy.jpg',
+            'assets/images/gallery/0218.jpg',
+            'assets/images/gallery/0093.jpg',
+            'assets/images/gallery/dsc09038.jpg'
         ],
         amDetail: [
             {icon:'<svg viewBox="0 0 24 24"><path d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/></svg>',name:{es:'Alberca Techada Climatizada',en:'Heated Covered Pool'},desc:{es:'Alberca tipo spa/wellness, disponible todo el año sin importar la temporada.',en:'Spa/wellness pool, available year-round regardless of season.'}},
@@ -4277,14 +4440,38 @@
         var curP=document.getElementById('bk-panel-'+n); if(curP)curP.classList.add('on');
         BK.step=n;
         window.scrollTo({top:0,behavior:'smooth'});
-        if(n===2){BK.checkin=null;BK.checkout=null;renderBkCal();}
+        if(n===2){BK.checkin=null;BK.checkout=null;updateCabinStyleSwitcherUI();renderBkCal();}
         if(n===3){renderBkSummary();bkSelectPM(BK.pm||'transfer');}
+    }
+
+    function updateCabinStyleSwitcherUI() {
+        var btn = document.getElementById('bkCabinStyleSwitcherBtn');
+        if (!btn) return;
+        var isSuite = (BK.acc === 0 || BK.acc === null);
+        if (isSuite) {
+            btn.className = 'btn-toggle-cabin-style brick';
+            btn.innerHTML = (L === 'es' ? 'Ver Suite con Rooftop →' : 'View Rooftop Suite →');
+        } else {
+            btn.className = 'btn-toggle-cabin-style light';
+            btn.innerHTML = (L === 'es' ? '← Ver Glamping Básico / Suite' : '← View Basic Suite');
+        }
+    }
+
+    function bkToggleCabinStyle() {
+        BK.acc = (BK.acc === 0 || BK.acc === null) ? 1 : 0;
+        var chip = document.getElementById('bkSelectedAccChip');
+        if (chip && D.acc && D.acc[BK.acc]) chip.textContent = t(D.acc[BK.acc].title);
+        updateCabinStyleSwitcherUI();
+        BK.checkin = null;
+        BK.checkout = null;
+        renderBkCal();
     }
 
     function bkSelectAcc(i) {
         BK.acc=i;
         var chip=document.getElementById('bkSelectedAccChip');
         if(chip)chip.textContent=t(D.acc[i].title);
+        updateCabinStyleSwitcherUI();
         bkGoStep(2);
     }
 
@@ -4662,6 +4849,13 @@
     <div class="chat-bubble-wrap">
         <span class="chatbot-tooltip" id="chatTooltip" data-lang-es="¿Necesitas ayuda?" data-lang-en="Need help?">¿Necesitas ayuda?</span>
         <img src="assets/images/logo.png" alt="Chat Anasazi" class="chatbot" onclick="if(window.$chatwoot) window.$chatwoot.toggle('open')">
+    </div>
+    <!-- FLOATING LANGUAGE PILL -->
+    <div class="floating-lang-pill" onclick="toggleLang()" title="Cambiar idioma / Switch language">
+        <span style="font-size:12px;opacity:0.75;">🌐</span>
+        <span class="on" id="es1">ES</span>
+        <span style="opacity:0.3;font-size:10px;">/</span>
+        <span id="en1">EN</span>
     </div>
     <a href="https://keplead.com" target="_blank" class="keplead-badge">Designed & Powered by KepLead</a>
 

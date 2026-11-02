@@ -1423,6 +1423,50 @@
             opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
+
+        /* ═══════════════════ SPA & PAYMENT GATEWAY MODAL STYLES ═══════════════════ */
+        .spa-chip {
+            padding: 7px 14px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: #fff;
+            color: var(--text);
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .spa-chip:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .spa-chip.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+        .pg-tab-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            background: none;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-soft);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .pg-tab-btn.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+        .pg-panel {
+            display: none;
+        }
+        .pg-panel.on {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -1850,6 +1894,26 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Reglamentos Oficiales Descargables -->
+            <div style="margin-top:24px;background:var(--cream);border:1px solid var(--border);border-radius:16px;padding:22px;">
+                <h4 style="font-family:var(--font-accent);font-size:1.15rem;margin-bottom:6px;color:var(--text);">📜 Reglamentos y Normas de la Estancia</h4>
+                <p style="font-size:0.85rem;color:var(--text-soft);margin-bottom:16px;">Para garantizar la armonía, paz y seguridad de todos los visitantes en el santuario, consulta los reglamentos oficiales:</p>
+                <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                    <a href="reglamento-cabanas.html" target="_blank" class="btn-copy" style="width:auto;text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:6px;">
+                        <span>🏡</span> Ver Reglamento de Cabañas
+                    </a>
+                    <a href="reglamento-alberca.html" target="_blank" class="btn-copy" style="width:auto;text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:6px;">
+                        <span>🏊‍♂️</span> Ver Reglamento de Alberca
+                    </a>
+                    <a href="assets/reglamento_cabanas.pdf" download class="btn-copy" style="width:auto;text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:6px;">
+                        <span>📄</span> PDF Cabañas
+                    </a>
+                    <a href="assets/reglamento_alberca.pdf" download class="btn-copy" style="width:auto;text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:6px;">
+                        <span>📄</span> PDF Alberca
+                    </a>
+                </div>
+            </div>
         </section>
 
         <!-- ═════════ TAB 6: MI CUENTA / FOLIO ═════════ -->
@@ -1976,6 +2040,170 @@
 
                 <button class="btn-checkout-confirm" onclick="confirmOrderCheckout()">
                     <span>Confirmar Orden a Cabaña</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════ SPA BOOKING LUXURY MODAL ═══════════════════ -->
+    <div class="guest-login-overlay" id="spaBookingModal" style="display:none;" onclick="if(event.target===this) closeSpaBookingModal()">
+        <div class="login-card" style="max-width:480px;text-align:left;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <div style="width:40px;height:40px;border-radius:12px;background:rgba(184,92,56,0.12);display:flex;align-items:center;justify-content:center;font-size:1.3rem;">💆</div>
+                    <div>
+                        <h3 id="spaModalTitle" style="font-family:var(--font-accent);font-size:1.25rem;color:var(--text);margin:0;">Masaje Relajante en Terraza</h3>
+                        <span id="spaModalBasePrice" style="font-size:0.85rem;color:var(--accent);font-weight:700;">$1,000 MXN / persona</span>
+                    </div>
+                </div>
+                <button type="button" onclick="closeSpaBookingModal()" style="background:none;border:none;font-size:1.5rem;color:var(--text-muted);cursor:pointer;padding:4px;">&times;</button>
+            </div>
+
+            <!-- Person Counter -->
+            <div class="form-group" style="margin-bottom:16px;">
+                <label class="form-label">Número de Personas:</label>
+                <div style="display:flex;align-items:center;justify-content:space-between;background:var(--cream);border:1px solid var(--border);border-radius:12px;padding:8px 16px;">
+                    <div>
+                        <div style="font-weight:600;font-size:0.9rem;" id="spaPersonLabel">1 Huésped</div>
+                        <div style="font-size:0.75rem;color:var(--text-muted);">Sesión simultánea o consecutiva</div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <button type="button" onclick="adjustSpaPeople(-1)" style="width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:#fff;font-weight:700;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">-</button>
+                        <span id="spaPeopleCount" style="font-weight:700;font-size:1rem;min-width:20px;text-align:center;">1</span>
+                        <button type="button" onclick="adjustSpaPeople(1)" style="width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:#fff;font-weight:700;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Time Selection Chips -->
+            <div class="form-group" style="margin-bottom:16px;">
+                <label class="form-label">Horario Preferido:</label>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;" id="spaTimeChips">
+                    <button type="button" class="spa-chip active" onclick="selectSpaTime(this, 'Hoy 4:00 PM')">Hoy 4:00 PM</button>
+                    <button type="button" class="spa-chip" onclick="selectSpaTime(this, 'Hoy 6:00 PM')">Hoy 6:00 PM</button>
+                    <button type="button" class="spa-chip" onclick="selectSpaTime(this, 'Hoy 8:00 PM')">Hoy 8:00 PM</button>
+                    <button type="button" class="spa-chip" onclick="selectSpaTime(this, 'Mañana 10:00 AM')">Mañana 10:00 AM</button>
+                    <button type="button" class="spa-chip" onclick="selectSpaTime(this, 'Mañana 12:00 PM')">Mañana 12:00 PM</button>
+                    <button type="button" class="spa-chip" onclick="selectSpaTime(this, 'custom')">Otro Horario</button>
+                </div>
+                <input type="text" id="spaCustomTimeInput" class="form-control" placeholder="Especifica fecha, hora u observaciones..." style="display:none;margin-top:6px;">
+            </div>
+
+            <!-- Payment Method -->
+            <div class="form-group" style="margin-bottom:16px;">
+                <label class="form-label">Forma de Pago:</label>
+                <div class="payment-toggle-group" style="margin:0;">
+                    <label class="payment-radio-label">
+                        <input type="radio" name="spaPaymentMode" value="room_charge" checked>
+                        <span>🛎️ <strong>Cargar a Cabaña</strong> (Liquidar al check-out)</span>
+                    </label>
+                    <label class="payment-radio-label">
+                        <input type="radio" name="spaPaymentMode" value="pay_now">
+                        <span>💳 <strong>Pagar Ahora en Línea</strong> (SPEI, Tarjeta o PayPal)</span>
+                    </label>
+                    <label class="payment-radio-label">
+                        <input type="radio" name="spaPaymentMode" value="cash">
+                        <span>💵 <strong>Efectivo</strong> (Al terapeuta en cabaña)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Total Preview -->
+            <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(184,92,56,0.06);border:1px solid rgba(184,92,56,0.2);border-radius:12px;padding:12px 16px;margin-bottom:18px;">
+                <span style="font-weight:600;font-size:0.9rem;color:var(--text);">Total a Liquidar:</span>
+                <span id="spaTotalDisplay" style="font-family:var(--font-accent);font-size:1.3rem;font-weight:700;color:var(--accent);">$1,000 MXN</span>
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="display:flex;flex-direction:column;gap:10px;">
+                <button type="button" class="btn-checkout-confirm" onclick="processSpaBooking('immediate')">
+                    <span>✨ Confirmar Reserva Inmediata</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+                <button type="button" class="btn-header-action" onclick="processSpaBooking('cart')" style="width:100%;justify-content:center;padding:12px;border-radius:12px;font-weight:600;font-size:0.88rem;color:var(--accent);border-color:var(--accent);">
+                    <span>🛒 Agregar al Carrito & Seguir Comprando</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════ PAYMENT GATEWAY MODAL ═══════════════════ -->
+    <div class="guest-login-overlay" id="paymentGatewayModal" style="display:none;" onclick="if(event.target===this) closePaymentGatewayModal()">
+        <div class="login-card" style="max-width:500px;text-align:left;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+                <div>
+                    <h3 style="font-family:var(--font-accent);font-size:1.3rem;color:var(--text);margin:0;">Pasarela de Pago Anasazi</h3>
+                    <span id="pgConceptLabel" style="font-size:0.82rem;color:var(--text-soft);">Reserva de Spa</span>
+                </div>
+                <button type="button" onclick="closePaymentGatewayModal()" style="background:none;border:none;font-size:1.5rem;color:var(--text-muted);cursor:pointer;padding:4px;">&times;</button>
+            </div>
+
+            <div style="background:var(--cream);border-radius:12px;padding:12px 16px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:0.85rem;font-weight:600;color:var(--text-soft);">Monto Total a Pagar:</span>
+                <span id="pgAmountDisplay" style="font-family:var(--font-accent);font-size:1.4rem;font-weight:700;color:var(--accent);">$1,000 MXN</span>
+            </div>
+
+            <!-- Payment Method Tabs -->
+            <div style="display:flex;gap:6px;margin-bottom:16px;border-bottom:1px solid var(--border);">
+                <button type="button" id="pgTabBtnSpei" class="pg-tab-btn active" onclick="switchPgTab('spei')">🏦 SPEI / Transf.</button>
+                <button type="button" id="pgTabBtnCard" class="pg-tab-btn" onclick="switchPgTab('card')">💳 Tarjeta</button>
+                <button type="button" id="pgTabBtnPaypal" class="pg-tab-btn" onclick="switchPgTab('paypal')">🅿️ PayPal</button>
+            </div>
+
+            <!-- SPEI Panel -->
+            <div id="pgPanelSpei" class="pg-panel on">
+                <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px;font-size:0.85rem;line-height:1.6;margin-bottom:14px;">
+                    <div><strong>Banco:</strong> BBVA Bancomer</div>
+                    <div><strong>Beneficiario:</strong> Glamping Anasazi S.A.P.I. de C.V.</div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px;background:var(--cream);padding:6px 10px;border-radius:8px;">
+                        <span><strong>CLABE:</strong> <span id="clabeNum">012 180 01538291048 2</span></span>
+                        <button type="button" onclick="copyClabe()" style="background:none;border:none;color:var(--accent);font-weight:700;font-size:0.75rem;cursor:pointer;">COPIAR</button>
+                    </div>
+                    <div style="margin-top:6px;font-size:0.78rem;color:var(--text-muted);">Referencia: <strong id="speiRefCode">CABAÑA-3</strong></div>
+                </div>
+                <button type="button" class="btn-checkout-confirm" onclick="finishPaymentGateway('spei')">
+                    <span>Confirmar Transferencia Realizada</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+            </div>
+
+            <!-- Card Panel -->
+            <div id="pgPanelCard" class="pg-panel" style="display:none;">
+                <div style="margin-bottom:14px;">
+                    <div class="form-group" style="margin-bottom:10px;">
+                        <label class="form-label">Número de Tarjeta:</label>
+                        <input type="text" class="form-control" placeholder="•••• •••• •••• ••••" maxlength="19">
+                    </div>
+                    <div style="display:flex;gap:10px;">
+                        <div style="flex:1;">
+                            <label class="form-label">Expiración:</label>
+                            <input type="text" class="form-control" placeholder="MM/AA" maxlength="5">
+                        </div>
+                        <div style="width:100px;">
+                            <label class="form-label">CVC:</label>
+                            <input type="text" class="form-control" placeholder="•••" maxlength="4">
+                        </div>
+                    </div>
+                    <div style="font-size:0.72rem;color:var(--text-muted);margin-top:8px;display:flex;align-items:center;gap:4px;">
+                        <span>🔒</span> Cifrado TLS 256-bit · Procesamiento directo con pasarela bancaria
+                    </div>
+                </div>
+                <button type="button" class="btn-checkout-confirm" onclick="finishPaymentGateway('card')">
+                    <span>Pagar con Tarjeta Ahora</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+            </div>
+
+            <!-- PayPal Panel -->
+            <div id="pgPanelPaypal" class="pg-panel" style="display:none;">
+                <div style="text-align:center;padding:16px;background:var(--cream);border-radius:12px;margin-bottom:14px;">
+                    <div style="font-size:2rem;margin-bottom:8px;">🅿️</div>
+                    <div style="font-weight:600;font-size:0.95rem;color:var(--text);">Pago con PayPal</div>
+                    <p style="font-size:0.8rem;color:var(--text-muted);margin-top:4px;">Paga seguro con tu cuenta de PayPal o tarjeta vinculada.</p>
+                </div>
+                <button type="button" class="btn-checkout-confirm" style="background:#0070ba;" onclick="finishPaymentGateway('paypal')">
+                    <span>Continuar a PayPal</span>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
                 </button>
             </div>
@@ -2482,14 +2710,113 @@
             showToast('✅ Petición enviada al equipo de recepción.');
         }
 
-        // ═══════════════════ SPA BOOKING ═══════════════════
-        function openSpaBookingModal(serviceName, price) {
-            const preferredTime = prompt(`¿Para qué horario prefieres tu sesión de "${serviceName}"?\n(Ejemplo: Hoy a las 6:00 PM o Mañana a las 10:00 AM):`, 'Hoy a las 6:00 PM');
-            if (!preferredTime) return;
+        // ═══════════════════ SPA BOOKING & PAYMENT GATEWAY ═══════════════════
+        let currentSpaItem = null;
+        let spaSelectedPeople = 1;
+        let spaSelectedTime = 'Hoy 4:00 PM';
+        let pendingPgCallback = null;
 
+        function openSpaBookingModal(serviceName, basePrice) {
+            currentSpaItem = {
+                name: serviceName,
+                basePrice: basePrice
+            };
+            spaSelectedPeople = 1;
+            spaSelectedTime = 'Hoy 4:00 PM';
+            
+            document.getElementById('spaModalTitle').textContent = serviceName;
+            document.getElementById('spaModalBasePrice').textContent = `$${basePrice.toLocaleString()} MXN / persona`;
+            document.getElementById('spaPeopleCount').textContent = '1';
+            document.getElementById('spaPersonLabel').textContent = '1 Huésped';
+            document.getElementById('spaTotalDisplay').textContent = `$${basePrice.toLocaleString()} MXN`;
+            
+            // Reset chips
+            document.querySelectorAll('#spaTimeChips .spa-chip').forEach((chip, idx) => {
+                chip.classList.toggle('active', idx === 0);
+            });
+            const customInput = document.getElementById('spaCustomTimeInput');
+            if (customInput) {
+                customInput.style.display = 'none';
+                customInput.value = '';
+            }
+            
+            document.getElementById('spaBookingModal').style.display = 'flex';
+        }
+
+        function closeSpaBookingModal() {
+            document.getElementById('spaBookingModal').style.display = 'none';
+        }
+
+        function adjustSpaPeople(delta) {
+            if (!currentSpaItem) return;
+            spaSelectedPeople = Math.max(1, Math.min(6, spaSelectedPeople + delta));
+            document.getElementById('spaPeopleCount').textContent = spaSelectedPeople;
+            document.getElementById('spaPersonLabel').textContent = spaSelectedPeople === 1 ? '1 Huésped' : `${spaSelectedPeople} Huéspedes`;
+            const total = currentSpaItem.basePrice * spaSelectedPeople;
+            document.getElementById('spaTotalDisplay').textContent = `$${total.toLocaleString()} MXN`;
+        }
+
+        function selectSpaTime(btn, val) {
+            document.querySelectorAll('#spaTimeChips .spa-chip').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            const customInput = document.getElementById('spaCustomTimeInput');
+            if (val === 'custom') {
+                if (customInput) {
+                    customInput.style.display = 'block';
+                    customInput.focus();
+                }
+                spaSelectedTime = customInput ? (customInput.value.trim() || 'Horario por coordinar') : 'Horario por coordinar';
+            } else {
+                if (customInput) customInput.style.display = 'none';
+                spaSelectedTime = val;
+            }
+        }
+
+        function processSpaBooking(actionType) {
+            if (!currentSpaItem) return;
+            const customInput = document.getElementById('spaCustomTimeInput');
+            const isCustom = customInput && customInput.style.display !== 'none';
+            const finalTime = isCustom ? (customInput.value.trim() || 'Horario coordinado con huésped') : spaSelectedTime;
+            const totalAmount = currentSpaItem.basePrice * spaSelectedPeople;
             const guest = currentGuest || { cabinId: 'G-03', cabinName: 'Glamping Anasazi 3 (Suite)', name: 'Roberto Gómez', phone: '656 123 4567' };
-            const title = `Reserva Spa: ${serviceName} (${preferredTime})`;
+            
+            const paymentModeRadio = document.querySelector('input[name="spaPaymentMode"]:checked');
+            const paymentMode = paymentModeRadio ? paymentModeRadio.value : 'room_charge';
+            
+            const serviceTitle = `${currentSpaItem.name} (${spaSelectedPeople} ${spaSelectedPeople === 1 ? 'persona' : 'personas'} · ${finalTime})`;
 
+            if (actionType === 'cart') {
+                // Add to Cart and let guest continue shopping
+                const spaCartId = 'spa_' + Date.now();
+                MENU_DATA.push({
+                    id: spaCartId,
+                    name: serviceTitle,
+                    cat: 'spa',
+                    price: totalAmount,
+                    desc: `Sesión de Spa para ${spaSelectedPeople} personas programada para ${finalTime}.`
+                });
+                cart[spaCartId] = 1;
+                updateCartUI();
+                closeSpaBookingModal();
+                showToast(`🛒 Agregado al carrito: ${currentSpaItem.name}`);
+                return;
+            }
+
+            // If "Pagar Ahora en Línea" is selected
+            if (paymentMode === 'pay_now') {
+                closeSpaBookingModal();
+                openPaymentGatewayModal(serviceTitle, totalAmount, function(method) {
+                    submitFinalSpaOrder(serviceTitle, totalAmount, 'paid_' + method, finalTime, guest);
+                });
+                return;
+            }
+
+            // Immediate confirmation with room_charge or cash
+            submitFinalSpaOrder(serviceTitle, totalAmount, paymentMode === 'room_charge' ? 'unpaid_checkout' : 'cash_on_delivery', finalTime, guest);
+            closeSpaBookingModal();
+        }
+
+        function submitFinalSpaOrder(title, amount, paymentStatus, scheduleTime, guest) {
             const spaRequest = {
                 id: 'spa-' + Date.now(),
                 tenant_id: 'glamping-anasazi',
@@ -2498,9 +2825,10 @@
                 guest_name: guest.name,
                 guest_phone: guest.phone,
                 request_type: 'guest_request',
-                title: title,
-                amount: price,
-                payment_status: 'unpaid_checkout',
+                category: 'spa',
+                title: `Reserva Spa: ${title}`,
+                amount: amount,
+                payment_status: paymentStatus,
                 status: 'pending',
                 assigned_to: 'Terapeuta Spa',
                 created_at: new Date().toISOString()
@@ -2510,12 +2838,54 @@
                 date: 'Hoy ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                 concept: title,
                 type: 'Spa & Bienestar',
-                amount: price,
-                paymentStatus: 'unpaid_checkout'
+                amount: amount,
+                paymentStatus: paymentStatus
             });
 
             syncOrderToKeplead(spaRequest);
-            showToast(`💆 Sesión de Spa programada para ${preferredTime}`);
+            showToast(`💆 Sesión de Spa programada: ${title}`);
+        }
+
+        // ═══════════════════ PASARELA DE PAGO ANASAZI ═══════════════════
+        function openPaymentGatewayModal(concept, amount, callback) {
+            pendingPgCallback = callback;
+            document.getElementById('pgConceptLabel').textContent = concept;
+            document.getElementById('pgAmountDisplay').textContent = `$${amount.toLocaleString()} MXN`;
+            const guest = currentGuest || { cabinId: 'G-03' };
+            const refCode = document.getElementById('speiRefCode');
+            if (refCode) refCode.textContent = (guest.cabinName || 'CABAÑA 3').toUpperCase();
+            
+            switchPgTab('spei');
+            document.getElementById('paymentGatewayModal').style.display = 'flex';
+        }
+
+        function closePaymentGatewayModal() {
+            document.getElementById('paymentGatewayModal').style.display = 'none';
+            pendingPgCallback = null;
+        }
+
+        function switchPgTab(tab) {
+            ['spei', 'card', 'paypal'].forEach(t => {
+                const btn = document.getElementById('pgTabBtn' + t.charAt(0).toUpperCase() + t.slice(1));
+                const pnl = document.getElementById('pgPanel' + t.charAt(0).toUpperCase() + t.slice(1));
+                if (btn) btn.classList.toggle('active', t === tab);
+                if (pnl) {
+                    pnl.style.display = (t === tab) ? 'block' : 'none';
+                }
+            });
+        }
+
+        function copyClabe() {
+            navigator.clipboard.writeText('012180015382910482');
+            showToast('📋 CLABE copiada al portapapeles');
+        }
+
+        function finishPaymentGateway(method) {
+            if (pendingPgCallback) {
+                pendingPgCallback(method);
+            }
+            closePaymentGatewayModal();
+            showToast(`✅ Pago registrado exitosamente (${method.toUpperCase()})`);
         }
 
         // ═══════════════════ FOLIO & LEDGER ═══════════════════

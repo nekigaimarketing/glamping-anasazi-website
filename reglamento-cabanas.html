@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reglamento General de Cabañas — Glamping Anasazi</title>
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #f0ebe3;
+            --white: #faf8f5;
+            --cream: #f5f0e8;
+            --text: #2c1810;
+            --text-soft: #6b5744;
+            --text-muted: #9c8b7a;
+            --accent: #b85c38;
+            --accent-deep: #8c3f22;
+            --border: #d9cdbf;
+            --border-light: #e8dfd3;
+            --shadow-soft: 0 4px 20px rgba(44, 24, 16, 0.06);
+            --shadow-medium: 0 12px 36px rgba(44, 24, 16, 0.1);
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Outfit', sans-serif;
+            --font-accent: 'Playfair Display', Georgia, serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            padding: 40px 20px 80px;
+        }
+
+        .reg-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 48px;
+            box-shadow: var(--shadow-medium);
+        }
+
+        @media (max-width: 640px) {
+            .reg-container { padding: 28px 20px; }
+        }
+
+        .reg-header {
+            text-align: center;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 28px;
+            margin-bottom: 32px;
+        }
+
+        .reg-logo {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            object-fit: contain;
+            margin-bottom: 14px;
+            border: 1px solid var(--border);
+            background: var(--white);
+        }
+
+        .reg-eyebrow {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .reg-title {
+            font-family: var(--font-accent);
+            font-size: 2.2rem;
+            color: var(--text);
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        .reg-subtitle {
+            font-size: 0.92rem;
+            color: var(--text-soft);
+            max-width: 580px;
+            margin: 0 auto;
+        }
+
+        .reg-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 36px;
+        }
+
+        .reg-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            background: var(--cream);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 16px 20px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .reg-item:hover {
+            transform: translateX(4px);
+            border-color: var(--accent);
+        }
+
+        .reg-item-icon {
+            font-size: 1.3rem;
+            line-height: 1;
+            margin-top: 2px;
+            color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .reg-item-text {
+            font-size: 0.95rem;
+            color: var(--text);
+            font-weight: 400;
+        }
+
+        .reg-item-text strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .reg-notice {
+            background: rgba(184, 92, 56, 0.08);
+            border-left: 4px solid var(--accent);
+            padding: 16px 20px;
+            border-radius: 0 12px 12px 0;
+            font-size: 0.9rem;
+            color: var(--text-soft);
+            margin-bottom: 32px;
+        }
+
+        .reg-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+            border-top: 1px solid var(--border-light);
+            padding-top: 24px;
+        }
+
+        .btn-reg {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 100px;
+            font-family: var(--font-body);
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-reg-primary {
+            background: var(--accent);
+            color: var(--white);
+            border: none;
+            box-shadow: 0 4px 14px rgba(184, 92, 56, 0.3);
+        }
+
+        .btn-reg-primary:hover {
+            background: var(--accent-deep);
+            transform: translateY(-2px);
+        }
+
+        .btn-reg-ghost {
+            background: transparent;
+            color: var(--text-soft);
+            border: 1px solid var(--border);
+        }
+
+        .btn-reg-ghost:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="reg-container">
+        <header class="reg-header">
+            <img src="assets/images/logo.png" alt="Glamping Anasazi" class="reg-logo">
+            <div class="reg-eyebrow">Convivencia y Armonía</div>
+            <h1 class="reg-title">Reglamento de Cabañas</h1>
+            <p class="reg-subtitle">Este es un santuario sagrado para que las personas se relajen en absoluto silencio y disfruten la majestuosidad de la naturaleza en el desierto.</p>
+        </header>
+
+        <div class="reg-list">
+            <div class="reg-item">
+                <span class="reg-item-icon">🚫</span>
+                <div class="reg-item-text"><strong>Prohibido meterse al lago:</strong> El lago privado alberga más de 15 esculturas y fuentes zen con fauna local protegida.</div>
+            </div>
+
+            <div class="reg-item">
+                <span class="reg-item-icon">🔇</span>
+                <div class="reg-item-text"><strong>Prohibido el uso de bocinas después de las 10:00 PM:</strong> Respetamos el silencio y la paz de todos los huéspedes bajo el cielo nocturno.</div>
+            </div>
+
+            <div class="reg-item">
+                <span class="reg-item-icon">🚪</span>
+                <div class="reg-item-text"><strong>Cerrar puertas en todo momento:</strong> Ayuda a mantener la climatización interior y evita el ingreso de fauna del desierto.</div>
+            </div>
+
+            <div class="reg-item">
+                <span class="reg-item-icon">❄️</span>
+                <div class="reg-item-text"><strong>Apagar sistema de clima al salir:</strong> Por favor apaga el sistema de aire o calefacción cuando no te encuentres dentro de la cabaña.</div>
+            </div>
+
+            <div class="reg-item">
+                <span class="reg-item-icon">💧</span>
+                <div class="reg-item-text"><strong>Ducha de 5 minutos máximo por persona:</strong> El agua es el recurso más valioso y sagrado del desierto de Samalayuca.</div>
+            </div>
+
+            <div class="reg-item">
+                <span class="reg-item-icon">🚭</span>
+                <div class="reg-item-text"><strong>Prohibido fumar dentro de las residencias y domos:</strong> Todo el interior de las habitaciones es un espacio 100% libre de humo y vapeo.</div>
+            </div>
+
+            <div class="reg-item">
+                <span class="reg-item-icon">🪪</span>
+                <div class="reg-item-text"><strong>Identificación oficial:</strong> Es requisito indispensable mostrar o enviar su identificación oficial al host al momento del registro.</div>
+            </div>
+
+            <div class="reg-item">
+                <span class="reg-item-icon">🗑️</span>
+                <div class="reg-item-text"><strong>Manejo de residuos:</strong> Depositar toda la basura en sus contenedores correspondientes para proteger el ecosistema.</div>
+            </div>
+
+            <div class="reg-item">
+                <span class="reg-item-icon">🛋️</span>
+                <div class="reg-item-text"><strong>Mobiliario interior:</strong> Prohibido sacar mobiliario, cojines o blancos de las habitaciones a la intemperie.</div>
+            </div>
+
+            <div class="reg-item">
+                <span class="reg-item-icon">🔥</span>
+                <div class="reg-item-text"><strong>Fogatas y asadores:</strong> Uso exclusivo en el área designada sobre grava para evitar riesgos de fuego.</div>
+            </div>
+        </div>
+
+        <div class="reg-notice">
+            📞 <strong>Asistencia y Reportes Inmediatos:</strong> Ante cualquier anomalía, problema o necesidad en tu cabaña, comunícate de inmediato al WhatsApp de Recepción: <a href="https://wa.me/526562973553" target="_blank" style="color:var(--accent);font-weight:700;text-decoration:none;">656 297-3553</a>.
+        </div>
+
+        <footer class="reg-actions">
+            <a href="index.html" class="btn-reg btn-reg-ghost">← Volver al Sitio Web</a>
+            <div style="display:flex;gap:10px;">
+                <a href="assets/reglamento_cabanas.pdf" download class="btn-reg btn-reg-ghost">📄 Descargar PDF</a>
+                <a href="guest.html" class="btn-reg btn-reg-primary">🔑 Portal Huéspedes</a>
+            </div>
+        </footer>
+    </div>
+
+</body>
+</html>
