@@ -2404,42 +2404,26 @@
         /* Step 2: Calendar */
         .bk-step2-title { font-family: var(--font-display); font-size: 2rem; color: var(--text); text-align: center; margin-bottom: 6px; }
         .bk-step2-sub { font-size: 0.88rem; color: var(--text-muted); text-align: center; margin-bottom: 12px; min-height: 22px; transition: color 0.3s; }
-        .bk-step2-acc-info { text-align: center; margin-bottom: 28px; }
-        .bk-step2-acc-chip { display: inline-flex; align-items: center; gap: 8px; background: var(--accent-soft); color: var(--accent); font-size: 0.8rem; font-weight: 500; padding: 8px 18px; border-radius: 100px; }
-        .btn-toggle-cabin-style {
+        .bk-step2-acc-info { text-align: center; margin-bottom: 24px; }
+        .btn-toggle-cabin-link {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 8px 18px;
-            border-radius: 100px;
-            font-size: 0.8rem;
+            background: transparent;
+            border: none;
+            color: var(--accent);
+            font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-            text-decoration: none;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            padding: 6px 14px;
+            border-radius: 100px;
+            transition: all 0.25s ease;
         }
-        .btn-toggle-cabin-style.brick {
-            background: var(--accent);
-            color: var(--white);
-            border-color: var(--accent);
-            box-shadow: 0 4px 12px rgba(184, 92, 56, 0.28);
-        }
-        .btn-toggle-cabin-style.brick:hover {
-            background: var(--accent-deep);
-            transform: translateY(-1px);
-        }
-        .btn-toggle-cabin-style.light {
-            background: rgba(255, 255, 255, 0.85);
-            color: var(--text-soft);
-            border-color: var(--border);
-            backdrop-filter: blur(8px);
-        }
-        .btn-toggle-cabin-style.light:hover {
-            background: var(--white);
-            color: var(--text);
-            border-color: var(--accent);
-            transform: translateY(-1px);
+        .btn-toggle-cabin-link:hover {
+            color: var(--accent-deep);
+            background: rgba(184, 92, 56, 0.08);
         }
         .bk-cal-wrap { max-width: 680px; margin: 0 auto; }
         .bk-cal-box { background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-medium); overflow: hidden; }
@@ -3047,7 +3031,7 @@
                     <!-- CABAÑA 1: GLAMPING SUITE -->
                     <div style="background:var(--white);border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:var(--shadow-soft);transition:transform 0.3s ease, box-shadow 0.3s ease;" class="cabin-showcase-card">
                         <div style="position:relative;height:240px;overflow:hidden;">
-                            <img src="assets/images/accommodation_1.jpg" alt="Glamping Suite Anasazi" style="width:100%;height:100%;object-fit:cover;">
+                            <img src="assets/images/glamping_basico.jpg" alt="Glamping Suite Anasazi" style="width:100%;height:100%;object-fit:cover;">
                             <span style="position:absolute;top:14px;left:14px;background:rgba(44,24,16,0.85);backdrop-filter:blur(8px);color:#fff;font-size:0.75rem;font-weight:700;padding:5px 12px;border-radius:100px;letter-spacing:0.05em;">
                                 Cabañas 1 a 6 · 6 Unidades
                             </span>
@@ -3073,7 +3057,7 @@
                     <!-- CABAÑA 2: ROOFTOP SUITE -->
                     <div style="background:var(--white);border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:var(--shadow-soft);transition:transform 0.3s ease, box-shadow 0.3s ease;" class="cabin-showcase-card">
                         <div style="position:relative;height:240px;overflow:hidden;">
-                            <img src="assets/images/accommodation_2.jpg" alt="Rooftop Suite Anasazi" style="width:100%;height:100%;object-fit:cover;">
+                            <img src="assets/images/glamping_suite.jpg" alt="Rooftop Suite Anasazi" style="width:100%;height:100%;object-fit:cover;">
                             <span style="position:absolute;top:14px;left:14px;background:var(--accent);color:#fff;font-size:0.75rem;font-weight:700;padding:5px 12px;border-radius:100px;letter-spacing:0.05em;box-shadow:0 2px 8px rgba(184,92,56,0.4);">
                                 ⭐ Cabañas 7 a 10 · 4 Unidades
                             </span>
@@ -3355,12 +3339,15 @@
             <div class="bk-step-panel" id="bk-panel-2">
                 <h2 class="bk-step2-title" data-lang-es="Elige tus fechas" data-lang-en="Choose your dates">Elige tus fechas</h2>
                 <p class="bk-step2-sub" id="bkCalHint" data-lang-es="Selecciona tu fecha de llegada" data-lang-en="Select your check-in date">Selecciona tu fecha de llegada</p>
-                <div class="bk-step2-acc-info">
-                    <div style="display:inline-flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;">
-                        <div class="bk-step2-acc-chip" id="bkSelectedAccChip">—</div>
-                        <button type="button" id="bkCabinStyleSwitcherBtn" class="btn-toggle-cabin-style brick" onclick="bkToggleCabinStyle()">
-                            Ver Suite con Rooftop →
-                        </button>
+                <div class="bk-step2-acc-info" style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:24px;">
+                    <!-- Top text link switcher in elegant brick color (not overpowering) -->
+                    <button type="button" id="bkCabinStyleSwitcherBtn" class="btn-toggle-cabin-link" onclick="bkToggleCabinStyle()">
+                        Ver Suite con Rooftop →
+                    </button>
+                    <!-- Big, clear cabin title and details underneath -->
+                    <div style="text-align:center;">
+                        <h3 id="bkSelectedAccTitle" style="font-family:var(--font-accent);font-size:2rem;font-weight:700;color:var(--text);margin:0;letter-spacing:0.02em;">Glamping Suite</h3>
+                        <p id="bkSelectedAccSubtitle" style="font-size:0.9rem;color:var(--text-muted);margin:4px 0 0 0;">Cabañas 1 a 6 · Jacuzzi Privado · $3,000 MXN / noche</p>
                     </div>
                 </div>
                 <div class="bk-cal-wrap">
@@ -4446,21 +4433,37 @@
 
     function updateCabinStyleSwitcherUI() {
         var btn = document.getElementById('bkCabinStyleSwitcherBtn');
-        if (!btn) return;
-        var isSuite = (BK.acc === 0 || BK.acc === null);
-        if (isSuite) {
-            btn.className = 'btn-toggle-cabin-style brick';
-            btn.innerHTML = (L === 'es' ? 'Ver Suite con Rooftop →' : 'View Rooftop Suite →');
-        } else {
-            btn.className = 'btn-toggle-cabin-style light';
-            btn.innerHTML = (L === 'es' ? '← Ver Glamping Básico / Suite' : '← View Basic Suite');
+        var titleEl = document.getElementById('bkSelectedAccTitle');
+        var subEl = document.getElementById('bkSelectedAccSubtitle');
+        var isBasic = (BK.acc === 0 || BK.acc === null);
+
+        if (btn) {
+            btn.className = 'btn-toggle-cabin-link';
+            if (isBasic) {
+                btn.innerHTML = (L === 'es' ? 'Ver Suite con Rooftop →' : 'View Rooftop Suite →');
+            } else {
+                btn.innerHTML = (L === 'es' ? '← Ver Glamping Básico' : '← View Basic Glamping');
+            }
+        }
+
+        if (titleEl && D.acc && D.acc[isBasic ? 0 : 1]) {
+            titleEl.textContent = t(D.acc[isBasic ? 0 : 1].title);
+        }
+        if (subEl) {
+            if (isBasic) {
+                subEl.textContent = (L === 'es'
+                    ? 'Cabañas 1 a 6 · Jacuzzi Privado · $2,500 MXN / noche'
+                    : 'Cabins 1 to 6 · Private Hot Tub · $2,500 MXN / night');
+            } else {
+                subEl.textContent = (L === 'es'
+                    ? '⭐ Cabañas 7 a 10 · Rooftop Panorámico & Jacuzzi · $3,000 MXN / noche'
+                    : '⭐ Cabins 7 to 10 · Panoramic Rooftop & Hot Tub · $3,000 MXN / night');
+            }
         }
     }
 
     function bkToggleCabinStyle() {
         BK.acc = (BK.acc === 0 || BK.acc === null) ? 1 : 0;
-        var chip = document.getElementById('bkSelectedAccChip');
-        if (chip && D.acc && D.acc[BK.acc]) chip.textContent = t(D.acc[BK.acc].title);
         updateCabinStyleSwitcherUI();
         BK.checkin = null;
         BK.checkout = null;
@@ -4469,8 +4472,6 @@
 
     function bkSelectAcc(i) {
         BK.acc=i;
-        var chip=document.getElementById('bkSelectedAccChip');
-        if(chip)chip.textContent=t(D.acc[i].title);
         updateCabinStyleSwitcherUI();
         bkGoStep(2);
     }

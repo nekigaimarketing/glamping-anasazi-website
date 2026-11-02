@@ -1669,13 +1669,30 @@
             <h2 class="section-heading">🛎️ Peticiones y Asistencia</h2>
             <p class="section-subheading">Solicita amenidades, suministros o asistencia técnica para tu cabaña.</p>
 
+            <!-- Active Requests Card with Cancel/Delete Options -->
+            <div class="active-requests-box" id="activeRequestsBox" style="margin-bottom:28px;background:var(--white);border:1px solid var(--border);border-radius:18px;padding:20px;box-shadow:var(--shadow-soft);">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;border-bottom:1px solid var(--border-soft);padding-bottom:12px;">
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <span style="font-size:1.3rem;">📋</span>
+                        <div>
+                            <h3 style="font-size:1.05rem;font-weight:700;color:var(--text);margin:0;">Tus Peticiones Activas</h3>
+                            <p style="font-size:0.78rem;color:var(--text-muted);margin:2px 0 0 0;">Seguimiento en vivo y opción para cancelar solicitudes si cambias de parecer.</p>
+                        </div>
+                    </div>
+                    <span id="activeRequestsCountBadge" style="font-size:0.75rem;font-weight:700;padding:4px 12px;border-radius:100px;background:var(--accent);color:#fff;">0 activas</span>
+                </div>
+                <div id="activeRequestsListContainer">
+                    <!-- Populated dynamically by renderActiveRequestsList() -->
+                </div>
+            </div>
+
             <div class="request-options-grid">
                 <div class="request-item-card">
                     <div class="request-item-icon">🪵</div>
                     <div class="request-item-info">
                         <div class="request-item-title">Carga de Leña de Encino</div>
                         <div class="request-item-desc">15 leños secos de encino con iniciador de fuego para tu fogatero.</div>
-                        <button class="btn-request-action" onclick="submitServiceRequest('Carga extra de leña de encino (15 leños)', 150, 'room_charge')">
+                        <button class="btn-request-action" onclick="openPaidRequestModal('Carga de Leña de Encino (15 leños)', 150, '🪵')">
                             Solicitar ($150 MXN)
                         </button>
                     </div>
@@ -1949,6 +1966,7 @@
                             <th>Tipo</th>
                             <th>Monto</th>
                             <th>Estado de Pago</th>
+                            <th style="text-align:center;">Acción</th>
                         </tr>
                     </thead>
                     <tbody id="folioLedgerBody">
@@ -2122,6 +2140,80 @@
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
                 </button>
                 <button type="button" class="btn-header-action" onclick="processSpaBooking('cart')" style="width:100%;justify-content:center;padding:12px;border-radius:12px;font-weight:600;font-size:0.88rem;color:var(--accent);border-color:var(--accent);">
+                    <span>🛒 Agregar al Carrito & Seguir Comprando</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════ PAID CABIN REQUEST MODAL (LEÑA & AMENIDADES) ═══════════════════ -->
+    <div class="guest-login-overlay" id="paidRequestModal" style="display:none;" onclick="if(event.target===this) closePaidRequestModal()">
+        <div class="login-card" style="max-width:480px;text-align:left;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <div id="paidReqIcon" style="width:40px;height:40px;border-radius:12px;background:rgba(184,92,56,0.12);display:flex;align-items:center;justify-content:center;font-size:1.3rem;">🪵</div>
+                    <div>
+                        <h3 id="paidReqModalTitle" style="font-family:var(--font-accent);font-size:1.25rem;color:var(--text);margin:0;">Carga de Leña de Encino</h3>
+                        <span id="paidReqModalBasePrice" style="font-size:0.85rem;color:var(--accent);font-weight:700;">$150 MXN / carga</span>
+                    </div>
+                </div>
+                <button type="button" onclick="closePaidRequestModal()" style="background:none;border:none;font-size:1.5rem;color:var(--text-muted);cursor:pointer;padding:4px;">&times;</button>
+            </div>
+
+            <!-- Quantity Stepper -->
+            <div class="form-group" style="margin-bottom:16px;">
+                <label class="form-label">Cantidad a Solicitar:</label>
+                <div style="display:flex;align-items:center;justify-content:space-between;background:var(--cream);border:1px solid var(--border);border-radius:12px;padding:8px 16px;">
+                    <div>
+                        <div style="font-weight:600;font-size:0.9rem;" id="paidReqQtyLabel">1 Carga (15 leños secos)</div>
+                        <div style="font-size:0.75rem;color:var(--text-muted);">Incluye iniciador de fuego para tu fogatero</div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <button type="button" onclick="adjustPaidReqQty(-1)" style="width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:#fff;font-weight:700;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">-</button>
+                        <span id="paidReqQtyCount" style="font-weight:700;font-size:1rem;min-width:20px;text-align:center;">1</span>
+                        <button type="button" onclick="adjustPaidReqQty(1)" style="width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:#fff;font-weight:700;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notes / Indicaciones especiales -->
+            <div class="form-group" style="margin-bottom:16px;">
+                <label class="form-label">Indicaciones especiales (Opcional):</label>
+                <input type="text" id="paidReqNoteInput" class="form-control" placeholder="Ej: Dejar cerca de fogatero o llevar cerillos extras...">
+            </div>
+
+            <!-- Forma de Pago -->
+            <div class="form-group" style="margin-bottom:16px;">
+                <label class="form-label">Forma de Pago:</label>
+                <div class="payment-toggle-group" style="margin:0;">
+                    <label class="payment-radio-label">
+                        <input type="radio" name="paidReqPaymentMode" value="room_charge" checked>
+                        <span>🛎️ <strong>Cargar a Cabaña</strong> (Liquidar al check-out)</span>
+                    </label>
+                    <label class="payment-radio-label">
+                        <input type="radio" name="paidReqPaymentMode" value="pay_now">
+                        <span>💳 <strong>Pagar Ahora en Línea</strong> (SPEI, Tarjeta o PayPal)</span>
+                    </label>
+                    <label class="payment-radio-label">
+                        <input type="radio" name="paidReqPaymentMode" value="cash">
+                        <span>💵 <strong>Efectivo</strong> (Al staff al recibir en cabaña)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Total Preview -->
+            <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(184,92,56,0.06);border:1px solid rgba(184,92,56,0.2);border-radius:12px;padding:12px 16px;margin-bottom:18px;">
+                <span style="font-weight:600;font-size:0.9rem;color:var(--text);">Total a Liquidar:</span>
+                <span id="paidReqTotalDisplay" style="font-family:var(--font-accent);font-size:1.3rem;font-weight:700;color:var(--accent);">$150 MXN</span>
+            </div>
+
+            <!-- Actions -->
+            <div style="display:flex;flex-direction:column;gap:10px;">
+                <button type="button" class="btn-checkout-confirm" onclick="processPaidRequest('immediate')">
+                    <span>🪵 Confirmar y Solicitar a Cabaña</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+                <button type="button" class="btn-header-action" onclick="processPaidRequest('cart')" style="width:100%;justify-content:center;padding:12px;border-radius:12px;font-weight:600;font-size:0.88rem;color:var(--accent);border-color:var(--accent);">
                     <span>🛒 Agregar al Carrito & Seguir Comprando</span>
                 </button>
             </div>
@@ -2328,6 +2420,7 @@
             renderFoodMenu('all');
             initUrlParams();
             updateCartUI();
+            renderActiveRequestsList();
         });
 
         // ═══════════════════ AUTHENTICATION SYSTEM ═══════════════════
@@ -2432,6 +2525,7 @@
             }
 
             loadGuestFolio();
+            renderActiveRequestsList();
         }
 
         function showChangeCabinModal() {
@@ -2631,8 +2725,21 @@
                 created_at: new Date().toISOString()
             };
 
+            // Add to Active Requests
+            addGuestActiveRequest({
+                id: orderId,
+                title: title,
+                amount: totalMonto,
+                paymentStatus: paymentMethod,
+                time: 'Hoy ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                status: 'pending',
+                category: 'food'
+            });
+
             // Save to Folio Ledger
             addFolioEntry({
+                id: 'folio-' + orderId,
+                requestId: orderId,
                 date: 'Hoy ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                 concept: title,
                 type: 'Room Service (Cocina)',
@@ -2664,9 +2771,10 @@
         // ═══════════════════ SERVICE REQUESTS ═══════════════════
         function submitServiceRequest(title, amount, paymentMode) {
             const guest = currentGuest || { cabinId: 'G-03', cabinName: 'Glamping Anasazi 3 (Suite)', name: 'Roberto Gómez', phone: '656 123 4567' };
+            const reqId = 'req-' + Date.now();
 
             const requestPayload = {
-                id: 'req-' + Date.now(),
+                id: reqId,
                 tenant_id: 'glamping-anasazi',
                 cabin_id: guest.cabinId,
                 cabin_name: guest.cabinName,
@@ -2681,8 +2789,21 @@
                 created_at: new Date().toISOString()
             };
 
+            // Register in Active Requests list with cancel capability
+            addGuestActiveRequest({
+                id: reqId,
+                title: title,
+                amount: amount,
+                paymentStatus: paymentMode === 'free' ? 'free' : 'unpaid_checkout',
+                time: 'Hoy ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                status: 'pending',
+                category: 'service'
+            });
+
             if (amount > 0) {
                 addFolioEntry({
+                    id: 'folio-' + reqId,
+                    requestId: reqId,
                     date: 'Hoy ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                     concept: title,
                     type: 'Amenidad / Suministro',
@@ -2817,8 +2938,9 @@
         }
 
         function submitFinalSpaOrder(title, amount, paymentStatus, scheduleTime, guest) {
+            const reqId = 'spa-' + Date.now();
             const spaRequest = {
-                id: 'spa-' + Date.now(),
+                id: reqId,
                 tenant_id: 'glamping-anasazi',
                 cabin_id: guest.cabinId,
                 cabin_name: guest.cabinName,
@@ -2834,12 +2956,25 @@
                 created_at: new Date().toISOString()
             };
 
+            // Register in active requests
+            addGuestActiveRequest({
+                id: reqId,
+                title: `Spa: ${title}`,
+                amount: amount,
+                paymentStatus: paymentStatus,
+                time: 'Hoy ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                status: 'pending',
+                category: 'spa'
+            });
+
             addFolioEntry({
+                id: 'folio-' + reqId,
+                requestId: reqId,
                 date: 'Hoy ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                 concept: title,
                 type: 'Spa & Bienestar',
                 amount: amount,
-                paymentStatus: paymentStatus
+                paymentStatus: paymentStatus.startsWith('paid_') ? 'app_prepaid' : paymentStatus === 'cash_on_delivery' ? 'cash' : 'unpaid_checkout'
             });
 
             syncOrderToKeplead(spaRequest);
@@ -2888,15 +3023,298 @@
             showToast(`✅ Pago registrado exitosamente (${method.toUpperCase()})`);
         }
 
+        // ═══════════════════ PAID REQUEST MODAL (LEÑA & EXTRAS) ═══════════════════
+        let currentPaidReqItem = null;
+        let paidReqQty = 1;
+
+        function openPaidRequestModal(name, basePrice, icon = '🪵') {
+            currentPaidReqItem = {
+                name: name,
+                basePrice: basePrice,
+                icon: icon
+            };
+            paidReqQty = 1;
+
+            const iconEl = document.getElementById('paidReqIcon');
+            if (iconEl) iconEl.textContent = icon;
+            document.getElementById('paidReqModalTitle').textContent = name;
+            document.getElementById('paidReqModalBasePrice').textContent = `$${basePrice.toLocaleString()} MXN / carga`;
+            document.getElementById('paidReqQtyCount').textContent = '1';
+            document.getElementById('paidReqQtyLabel').textContent = '1 Carga (15 leños secos)';
+            document.getElementById('paidReqTotalDisplay').textContent = `$${basePrice.toLocaleString()} MXN`;
+            document.getElementById('paidReqNoteInput').value = '';
+
+            document.getElementById('paidRequestModal').style.display = 'flex';
+        }
+
+        function closePaidRequestModal() {
+            document.getElementById('paidRequestModal').style.display = 'none';
+        }
+
+        function adjustPaidReqQty(delta) {
+            if (!currentPaidReqItem) return;
+            paidReqQty = Math.max(1, Math.min(10, paidReqQty + delta));
+            document.getElementById('paidReqQtyCount').textContent = paidReqQty;
+            document.getElementById('paidReqQtyLabel').textContent = `${paidReqQty} ${paidReqQty === 1 ? 'Carga (15 leños secos)' : 'Cargas (' + (paidReqQty * 15) + ' leños secos)'}`;
+            const total = currentPaidReqItem.basePrice * paidReqQty;
+            document.getElementById('paidReqTotalDisplay').textContent = `$${total.toLocaleString()} MXN`;
+        }
+
+        function processPaidRequest(actionType) {
+            if (!currentPaidReqItem) return;
+            const note = document.getElementById('paidReqNoteInput').value.trim();
+            const totalAmount = currentPaidReqItem.basePrice * paidReqQty;
+            const fullTitle = `${currentPaidReqItem.name} (${paidReqQty} ${paidReqQty === 1 ? 'carga' : 'cargas'})`;
+            const guest = currentGuest || { cabinId: 'G-03', cabinName: 'Glamping Anasazi 3 (Suite)', name: 'Roberto Gómez', phone: '656 123 4567' };
+
+            const paymentModeRadio = document.querySelector('input[name="paidReqPaymentMode"]:checked');
+            const paymentMode = paymentModeRadio ? paymentModeRadio.value : 'room_charge';
+
+            if (actionType === 'cart') {
+                const cartItemId = 'paid_req_' + Date.now();
+                MENU_DATA.push({
+                    id: cartItemId,
+                    name: fullTitle,
+                    cat: 'amenidades',
+                    price: totalAmount,
+                    desc: `Entrega en fogatero de cabaña. ${note ? 'Nota: ' + note : ''}`
+                });
+                cart[cartItemId] = 1;
+                updateCartUI();
+                closePaidRequestModal();
+                showToast(`🛒 Agregado al carrito: ${fullTitle}`);
+                return;
+            }
+
+            if (paymentMode === 'pay_now') {
+                closePaidRequestModal();
+                openPaymentGatewayModal(fullTitle, totalAmount, function(method) {
+                    submitFinalPaidRequestOrder(fullTitle, totalAmount, 'paid_' + method, note, guest);
+                });
+                return;
+            }
+
+            submitFinalPaidRequestOrder(fullTitle, totalAmount, paymentMode === 'room_charge' ? 'unpaid_checkout' : 'cash_on_delivery', note, guest);
+            closePaidRequestModal();
+        }
+
+        function submitFinalPaidRequestOrder(title, amount, paymentStatus, note, guest) {
+            const reqId = 'paid-req-' + Date.now();
+            const requestPayload = {
+                id: reqId,
+                tenant_id: 'glamping-anasazi',
+                cabin_id: guest.cabinId,
+                cabin_name: guest.cabinName,
+                guest_name: guest.name,
+                guest_phone: guest.phone,
+                request_type: 'guest_request',
+                category: 'amenity',
+                title: title,
+                amount: amount,
+                payment_status: paymentStatus,
+                status: 'pending',
+                notes: note,
+                assigned_to: 'Staff Operaciones',
+                created_at: new Date().toISOString()
+            };
+
+            addGuestActiveRequest({
+                id: reqId,
+                title: title,
+                amount: amount,
+                paymentStatus: paymentStatus,
+                time: 'Hoy ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                status: 'pending',
+                category: 'amenity'
+            });
+
+            addFolioEntry({
+                id: 'folio-' + reqId,
+                requestId: reqId,
+                date: 'Hoy ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                concept: title,
+                type: 'Amenidad / Leña',
+                amount: amount,
+                paymentStatus: paymentStatus.startsWith('paid_') ? 'app_prepaid' : paymentStatus === 'cash_on_delivery' ? 'cash' : 'unpaid_checkout'
+            });
+
+            syncOrderToKeplead(requestPayload);
+            showToast(`🪵 Solicitud registrada: ${title}`);
+        }
+
+        // ═══════════════════ ACTIVE REQUESTS MANAGER ═══════════════════
+        function getActiveRequests() {
+            const cabinId = currentGuest ? currentGuest.cabinId : 'G-03';
+            try {
+                const saved = localStorage.getItem(`anasazi_active_requests_${cabinId}`);
+                if (saved) return JSON.parse(saved);
+            } catch(e) {}
+            const initialSeed = [
+                {
+                    id: 'req-seed-1',
+                    title: '2x Toallas corporales de alberca y jacuzzi',
+                    amount: 0,
+                    paymentStatus: 'free',
+                    time: 'Hace 20 min',
+                    status: 'pending',
+                    category: 'service'
+                }
+            ];
+            localStorage.setItem(`anasazi_active_requests_${cabinId}`, JSON.stringify(initialSeed));
+            return initialSeed;
+        }
+
+        function saveActiveRequests(list) {
+            const cabinId = currentGuest ? currentGuest.cabinId : 'G-03';
+            localStorage.setItem(`anasazi_active_requests_${cabinId}`, JSON.stringify(list));
+            renderActiveRequestsList();
+        }
+
+        function addGuestActiveRequest(reqObj) {
+            const list = getActiveRequests();
+            list.unshift(reqObj);
+            saveActiveRequests(list);
+        }
+
+        function renderActiveRequestsList() {
+            const container = document.getElementById('activeRequestsListContainer');
+            const badge = document.getElementById('activeRequestsCountBadge');
+            if (!container) return;
+
+            const list = getActiveRequests();
+            if (badge) {
+                badge.textContent = `${list.length} ${list.length === 1 ? 'activa' : 'activas'}`;
+                badge.style.display = list.length > 0 ? 'inline-block' : 'none';
+            }
+
+            if (list.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align:center;padding:18px 10px;background:var(--cream);border-radius:12px;border:1px dashed var(--border);">
+                        <span style="font-size:1.4rem;display:block;margin-bottom:6px;">✨</span>
+                        <p style="font-size:0.85rem;color:var(--text-soft);margin:0;font-weight:500;">
+                            No tienes ninguna petición activa en este momento.
+                        </p>
+                        <p style="font-size:0.75rem;color:var(--text-muted);margin:4px 0 0 0;">
+                            Solicita leña, toallas, soporte técnico o room service cuando lo requieras.
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '<div style="display:flex;flex-direction:column;gap:10px;">';
+            list.forEach(req => {
+                const isPaidStatus = req.paymentStatus === 'app_prepaid' || (req.paymentStatus && req.paymentStatus.startsWith('paid_'));
+                const isFree = req.amount === 0 || req.paymentStatus === 'free';
+                const paymentLabel = isFree 
+                    ? '<span style="color:#6b5744;background:#f5f0e8;padding:2px 7px;border-radius:100px;font-size:0.72rem;font-weight:600;">Cortesía</span>'
+                    : isPaidStatus
+                    ? '<span style="color:#15803d;background:#f0fdf4;padding:2px 7px;border-radius:100px;font-size:0.72rem;font-weight:600;">✓ Pre-pagado Digital</span>'
+                    : req.paymentStatus === 'cash' || req.paymentStatus === 'cash_on_delivery'
+                    ? '<span style="color:#0284c7;background:#f0f9ff;padding:2px 7px;border-radius:100px;font-size:0.72rem;font-weight:600;">Efectivo en Cabaña</span>'
+                    : '<span style="color:#b85c38;background:rgba(184,92,56,0.1);padding:2px 7px;border-radius:100px;font-size:0.72rem;font-weight:600;">Cargo a Cabaña ($' + req.amount + ' MXN)</span>';
+
+                html += `
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-radius:14px;background:var(--cream);border:1px solid var(--border);transition:all 0.2s ease;">
+                        <div style="flex:1;min-width:0;">
+                            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:3px;">
+                                <strong style="font-size:0.88rem;color:var(--text);">${req.title}</strong>
+                                <span style="font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:100px;background:#fef3c7;color:#92400e;display:inline-flex;align-items:center;gap:3px;">
+                                    <span>⏳</span>
+                                    <span>${req.status === 'in_progress' ? 'En camino' : 'Pendiente / En turno'}</span>
+                                </span>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:0.75rem;color:var(--text-muted);">
+                                <span>${req.time || 'Hoy'}</span>
+                                <span>·</span>
+                                ${paymentLabel}
+                            </div>
+                        </div>
+                        <button type="button" onclick="cancelGuestRequest('${req.id}')" style="background:#fee2e2;border:1px solid #fca5a5;color:#b91c1c;padding:6px 12px;border-radius:10px;font-size:0.75rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:4px;shrink-0;transition:all 0.15s ease;" title="Cancelar esta petición">
+                            <span>🗑️</span>
+                            <span>Cancelar</span>
+                        </button>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function cancelGuestRequest(reqId, askConfirm = true) {
+            if (askConfirm) {
+                if (!confirm('¿Deseas cancelar esta petición para tu cabaña?')) return;
+            }
+            const cabinId = currentGuest ? currentGuest.cabinId : 'G-03';
+            let requests = getActiveRequests();
+            const req = requests.find(r => r.id === reqId);
+
+            // Remove from active requests
+            requests = requests.filter(r => r.id !== reqId);
+            saveActiveRequests(requests);
+
+            // If it had a folio entry, remove it
+            if (req) {
+                guestFolioCharges = guestFolioCharges.filter(item => 
+                    item.requestId !== reqId && 
+                    !(req.amount > 0 && item.concept === req.title && item.paymentStatus !== 'prepaid_reservation')
+                );
+                saveFolio();
+                renderFolioTable();
+            }
+
+            // Remove from KepLead sync queue
+            try {
+                const queueKey = 'keplead_guest_requests_queue';
+                let q = JSON.parse(localStorage.getItem(queueKey) || '[]');
+                q = q.filter(item => item.id !== reqId);
+                localStorage.setItem(queueKey, JSON.stringify(q));
+            } catch(e) {}
+
+            showToast('🗑️ Petición cancelada exitosamente.');
+        }
+
+        function deleteFolioItem(identifier) {
+            const item = guestFolioCharges.find(it => it.id === identifier || it.concept === identifier);
+            if (!item) return;
+
+            if (item.paymentStatus === 'prepaid_reservation' || item.id === 'stay-base') {
+                alert('El cargo de estancia base reservada no puede eliminarse desde aquí. Para aclaraciones, contacta a Recepción.');
+                return;
+            }
+
+            if (confirm(`¿Deseas cancelar y eliminar "${item.concept}" de tu estado de cuenta?`)) {
+                guestFolioCharges = guestFolioCharges.filter(it => it.id !== identifier && it.concept !== identifier);
+                saveFolio();
+                renderFolioTable();
+
+                // If linked to an active request, cancel that request too
+                if (item.requestId) {
+                    cancelGuestRequest(item.requestId, false);
+                } else {
+                    const cabinId = currentGuest ? currentGuest.cabinId : 'G-03';
+                    let requests = getActiveRequests();
+                    requests = requests.filter(r => r.title !== item.concept);
+                    saveActiveRequests(requests);
+                }
+
+                showToast(`🗑️ "${item.concept}" eliminado de tu cuenta.`);
+            }
+        }
+
         // ═══════════════════ FOLIO & LEDGER ═══════════════════
         function loadGuestFolio() {
             const savedFolio = localStorage.getItem(`anasazi_folio_${currentGuest ? currentGuest.cabinId : 'G-03'}`);
             if (savedFolio) {
                 guestFolioCharges = JSON.parse(savedFolio);
+                guestFolioCharges.forEach((it, i) => {
+                    if (!it.id) it.id = 'folio-item-' + i;
+                });
             } else {
                 // Initial Default Folio (Stay included)
                 guestFolioCharges = [
                     {
+                        id: 'stay-base',
                         date: 'Check-in (3:00 PM)',
                         concept: `Hospedaje 1 Noche — ${currentGuest ? currentGuest.cabinName : 'Cabaña 3'}`,
                         type: 'Estancia',
@@ -2910,6 +3328,9 @@
         }
 
         function addFolioEntry(entry) {
+            if (!entry.id) {
+                entry.id = 'folio-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4);
+            }
             guestFolioCharges.push(entry);
             saveFolio();
             renderFolioTable();
@@ -2947,6 +3368,11 @@
                     badgeHtml = '<span style="color:#b85c38;background:rgba(184,92,56,0.1);padding:3px 8px;border-radius:100px;font-weight:600;font-size:0.75rem;">⏳ Cargo a Cabaña</span>';
                 }
 
+                const isCore = item.paymentStatus === 'prepaid_reservation' || item.id === 'stay-base';
+                const actionBtn = isCore
+                    ? '<span style="font-size:0.75rem;color:var(--text-muted);">Estancia</span>'
+                    : `<button type="button" onclick="deleteFolioItem('${item.id || item.concept}')" style="background:#fee2e2;border:1px solid #fca5a5;color:#b91c1c;padding:4px 8px;border-radius:6px;font-size:0.75rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:3px;" title="Eliminar y cancelar de la cuenta"><span>🗑️</span><span>Eliminar</span></button>`;
+
                 rowsHtml += `
                     <tr>
                         <td>
@@ -2956,6 +3382,7 @@
                         <td>${item.type}</td>
                         <td style="font-weight:600;">$${item.amount.toLocaleString()} MXN</td>
                         <td>${badgeHtml}</td>
+                        <td style="text-align:center;">${actionBtn}</td>
                     </tr>
                 `;
             });
